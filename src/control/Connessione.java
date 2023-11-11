@@ -32,17 +32,17 @@ public class Connessione implements Runnable{
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
 			
-			//this.run();
+			this.run();
 		}catch(IOException e) { e.printStackTrace(); }
 	}
 	
 	public void run() {
 		//attendo che al server si connettano tutti i client
-		while(!server.getInizio()) {
-			try {
+		try {
+			while(!server.getInizio()) {
 				Thread.sleep(1000);
-			} catch (InterruptedException e) { e.printStackTrace(); }
-		}
+			}
+		} catch (InterruptedException e) { e.printStackTrace(); }
 		
 		//invio l'ok al client
 		System.out.println("Server pronto");
@@ -51,16 +51,14 @@ public class Connessione implements Runnable{
 		} catch (IOException e) { e.printStackTrace(); }
 		
 		Messaggio msg;
-		while(true) {
-			try {
+		try {
+			while(true) {
 				//riceve l'azione da eseguire
 				msg = (Messaggio) input.readObject();
 				
 				//if(msg.getAzione() == Azione.BULLET)
-					
-				
-			} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
-		}
+			}
+		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}
 	
 	/*----- GETTER E SETTER -----*/

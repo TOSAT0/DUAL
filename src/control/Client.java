@@ -25,7 +25,7 @@ public class Client implements Runnable{
 		this.engine = engine;
 		
 		try {
-			connessione = new Socket(InetAddress.getLocalHost(), 5000);
+			connessione = new Socket(InetAddress.getLocalHost(), 10000);
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
 			
@@ -46,12 +46,20 @@ public class Client implements Runnable{
 	
 	public void run() {
 		Messaggio msg;
-		while(true) {
-			try {
+		
+		try {
+			while(true) {
+				System.out.println("prova");
 				msg = (Messaggio) input.readObject();
+				System.out.println("sleep");
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				engine.eseguiAzione(msg,1);
-			} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
-		}
+			}
+		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}
 	
 }

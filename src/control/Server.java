@@ -30,7 +30,7 @@ public class Server implements Runnable{
 		
 		//avvio il server
 		try {
-			server = new ServerSocket(5000);
+			server = new ServerSocket(10000, 5);
 			System.out.println("Server attivo\n");
 			this.run();
 		}catch(IOException e) { e.printStackTrace(); }
@@ -43,7 +43,7 @@ public class Server implements Runnable{
 			for(int i=0; i<numClient; i++) {
 				connessione = server.accept();
 				new Connessione(this,connessione,i);
-				System.out.println("Client: "+connessione);
+				System.out.println("Player"+(i+1)+": "+connessione.getInetAddress()+":"+connessione.getPort());
 			}
 			System.out.println("Server: OK");
 			inizio = true;

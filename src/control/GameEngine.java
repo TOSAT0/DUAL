@@ -32,8 +32,8 @@ public class GameEngine implements Runnable{
 	public GameEngine() {
 		inputManager = new InputManager(this);
 		pannello = new Pannello(this, height, width);
-		client = null;
-		//client = new Client(this);
+		//client = null;
+		client = new Client(this);
 		
 		proiettili = 10;
 		
