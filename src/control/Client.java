@@ -26,32 +26,22 @@ public class Client implements Runnable{
 		
 		try {
 			connessione = new Socket(InetAddress.getLocalHost(), 10000);
+			System.out.println("Connessione: "+connessione); // <-TODO: ELIMINARE
+			
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
-			
-			System.out.println("Connessione: "+connessione);
 		}catch(IOException e) { e.printStackTrace(); }
-		
-		this.run();
-	}
-	
-	public void inviaOggetto(Messaggio msg) {
-		/*try {
-			output.writeObject(msg);
-		} catch (IOException e) { e.printStackTrace(); }*/
 	}
 	
 	public void run() {
 		try {
 			Avvio avvio = (Avvio) input.readObject();
-			/*engine.setInizio(true);
-			engine.setInvia(avvio.getInvia())*/
+			engine.setInizio(true);
+			engine.setInvia(avvio.getInvia());
 			System.out.println("Server: OK"); // <-TODO: ELIMINARE
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
-		System.out.println("no");
-		
-		Messaggio msg;
+		/*Messaggio msg;
 		try {
 			while(true) {
 				System.out.println("prova");
@@ -64,7 +54,13 @@ public class Client implements Runnable{
 				}
 				engine.eseguiAzione(msg,1);
 			}
-		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
+		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }*/
+	}
+	
+	public void inviaOggetto(Messaggio msg) {
+		/*try {
+			output.writeObject(msg);
+		} catch (IOException e) { e.printStackTrace(); }*/
 	}
 	
 }

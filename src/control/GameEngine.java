@@ -25,6 +25,7 @@ public class GameEngine implements Runnable{
 	private final InputManager inputManager;
 	private final Pannello pannello;
 	private final Client client;
+	private final Thread tclient;
 	private Timer timer;
 	
 	private boolean carica = false, inizio = false, invia;
@@ -32,8 +33,10 @@ public class GameEngine implements Runnable{
 	public GameEngine() {
 		inputManager = new InputManager(this);
 		pannello = new Pannello(this, height, width);
-		//client = null;
+		//c = null;
 		client = new Client(this);
+		tclient = new Thread(client);
+		tclient.start();
 		
 		proiettili = 10;
 		
@@ -96,7 +99,6 @@ public class GameEngine implements Runnable{
 	};
 	
 	public void run() {
-		inizio = true; // <- TODO:ELIMINARE
 		//fino a quanto non sono connessi tutti i client
 		while(!inizio) {
 			try {

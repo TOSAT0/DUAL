@@ -22,17 +22,13 @@ public class Connessione implements Runnable{
 	private int id;
 	
 	public Connessione(Server server, Socket connessione, int id) {
-		
 		this.server = server;
 		this.id = id;
 		
 		try {
-			//mi connetto al client
 			this.connessione = connessione;
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
-			
-			//this.run();
 		}catch(IOException e) { e.printStackTrace(); }
 	}
 	
@@ -41,15 +37,14 @@ public class Connessione implements Runnable{
 		try {
 			while(!server.getInizio()) {
 				Thread.sleep(1000);
-				System.out.println(id);
 			}
 		} catch (InterruptedException e) { e.printStackTrace(); }
-		System.out.println("Server pronto");
+		System.out.println("Comunicazione pronta");
 		
 		//invio l'ok al client
-		/*try {
+		try {
 			output.writeObject(new Avvio((id == 0 || id == 1) ? true : false));
-		} catch (IOException e) { e.printStackTrace(); }*/
+		} catch (IOException e) { e.printStackTrace(); }
 		
 		/*Messaggio msg;
 		try {
