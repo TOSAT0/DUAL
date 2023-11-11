@@ -29,11 +29,8 @@ public class Client implements Runnable{
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
 			
-			Avvio avvio = (Avvio) input.readObject();
-			engine.setInizio(true);
-			engine.setInvia(avvio.getInvia());
-			System.out.println("Server: OK"); // <-TODO: ELIMINARE
-		}catch(IOException | ClassNotFoundException e) { e.printStackTrace(); }
+			System.out.println("Connessione: "+connessione);
+		}catch(IOException e) { e.printStackTrace(); }
 		
 		this.run();
 	}
@@ -45,8 +42,16 @@ public class Client implements Runnable{
 	}
 	
 	public void run() {
-		Messaggio msg;
+		try {
+			Avvio avvio = (Avvio) input.readObject();
+			/*engine.setInizio(true);
+			engine.setInvia(avvio.getInvia())*/
+			System.out.println("Server: OK"); // <-TODO: ELIMINARE
+		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
+		System.out.println("no");
+		
+		Messaggio msg;
 		try {
 			while(true) {
 				System.out.println("prova");

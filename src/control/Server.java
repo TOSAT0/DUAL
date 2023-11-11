@@ -42,8 +42,8 @@ public class Server implements Runnable{
 		try {
 			for(int i=0; i<numClient; i++) {
 				connessione = server.accept();
-				new Connessione(this,connessione,i);
 				System.out.println("Player"+(i+1)+": "+connessione.getInetAddress()+":"+connessione.getPort());
+				new Connessione(this,connessione,i);
 			}
 			System.out.println("Server: OK");
 			inizio = true;
