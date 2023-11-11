@@ -1,3 +1,0 @@
-ci sono problemi con la connessione dei client al server
-probabilmente non è possibile avviare il programma come client due volte, perchè se così non fosse, in teoria, il server dovrebbe stampare "Server: OK" dopo la connessione di entrambi i client
-bisogna capire se il meccanismo di invia dell'oggetto Avvia funziona o meno
