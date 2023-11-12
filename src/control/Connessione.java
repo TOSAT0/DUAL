@@ -52,6 +52,12 @@ public class Connessione implements Runnable{
 				//riceve l'azione da eseguire
 				msg = (Messaggio) input.readObject();
 				System.out.println("msg: "+msg.getAzione());
+				
+				if(msg.getAzione() == Azione.BULLET) { //1v1 (2v2)
+					//invio all'altra squadra
+				}else { //solo x 2v2
+					//invio alla propria squadra
+				}
 			}
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}
