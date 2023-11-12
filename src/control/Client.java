@@ -33,6 +33,9 @@ public class Client implements Runnable{
 		}catch(IOException e) { e.printStackTrace(); }
 	}
 	
+//-------------------- RUN --------------------------------------------------//
+	
+	/*ATTENDE L'ARRIVO DI MESSAGGI DAL SERVER*/
 	public void run() {
 		try {
 			Avvio avvio = (Avvio) input.readObject();
@@ -53,7 +56,10 @@ public class Client implements Runnable{
 			}
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}
+
+//-------------------- ALTRI METODI ----------------------------------------//
 	
+	/*INVIA MESSAGGI AL SERVER*/
 	public void inviaOggetto(Messaggio msg) {
 		try {
 			output.writeObject(msg);

@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import model.Avvio;
 import model.Messaggio;
-import model.Oggetto;
 import model.Messaggio.Azione;
 
 public class Connessione implements Runnable{
@@ -18,7 +16,7 @@ public class Connessione implements Runnable{
 	private ObjectInputStream input;
 	
 	private Server server;
-	private ComunicazioneThread ct;
+	private Buffer buffer;
 	
 	private int id;
 	
@@ -26,8 +24,8 @@ public class Connessione implements Runnable{
 		this.server = server;
 		this.id = id;
 		
-		this.ct = new ComunicazioneThread(this);
-		new Thread(ct).start();
+		this.buffer = new Buffer(this);
+		new Thread(buffer).start();
 		
 		try {
 			this.connessione = connessione;
@@ -35,9 +33,11 @@ public class Connessione implements Runnable{
 			input = new ObjectInputStream(connessione.getInputStream());
 		}catch(IOException e) { e.printStackTrace(); }
 	}
+
+//-------------------- RUN --------------------------------------------------//
 	
+	/*ATTENDE L'ARRIVO DI MESSAGGI DAL CLIENT*/
 	public void run() {
-		//attendo che al server si connettano tutti i client
 		try {
 			while(!server.getInizio()) {
 				Thread.sleep(1000);
@@ -45,7 +45,6 @@ public class Connessione implements Runnable{
 		} catch (InterruptedException e) { e.printStackTrace(); }
 		System.out.println("Comunicazione pronta");
 		
-		//invio l'ok al client
 		try {
 			output.writeObject(new Avvio((id == 0 || id == 1) ? true : false));
 		} catch (IOException e) { e.printStackTrace(); }
@@ -53,12 +52,11 @@ public class Connessione implements Runnable{
 		Messaggio msg;
 		try {
 			while(true) {
-				//riceve l'azione da eseguire
 				msg = (Messaggio) input.readObject();
 				System.out.println("msg: "+msg.getAzione());
 				
 				if(msg.getAzione() == Azione.BULLET) { //1v1 (2v2)
-					ct.setMsg(msg);
+					buffer.setMsg(msg);
 				}else { //solo x 2v2
 					//invio alla propria squadra
 				}
@@ -66,14 +64,12 @@ public class Connessione implements Runnable{
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}
 
+//-------------------- ALTRI METODI ------------------------------//
+	
+	/*INVIA MESSAGGI AL CLIENT*/
 	public void inviaOggetto(Messaggio msg) {
 		try {
 			output.writeObject(msg);
 		} catch (IOException e) { e.printStackTrace(); }
 	}
-	
-	/*----- GETTER E SETTER -----*/
-	
-	
-
 }

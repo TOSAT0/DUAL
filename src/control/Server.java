@@ -40,9 +40,8 @@ public class Server {
 		//faccio connettere il numero di client indicato
 		try {
 			for(int i=0; i<numClient; i++) {
-				System.out.println("test");
 				connessione = server.accept();
-				System.out.println("Player"+(i+1)+": "+connessione.getInetAddress()+":"+connessione.getPort()+"\n");
+				System.out.println("Player"+(i+1)+": "+connessione.getInetAddress()+":"+connessione.getPort());
 				new Thread(new Connessione(this, connessione,i)).start();
 			}
 			System.out.println("Server: OK");
