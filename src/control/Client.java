@@ -41,26 +41,23 @@ public class Client implements Runnable{
 			System.out.println("Server: OK"); // <-TODO: ELIMINARE
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
-		/*Messaggio msg;
+		Messaggio msg;
 		try {
 			while(true) {
-				System.out.println("prova");
 				msg = (Messaggio) input.readObject();
-				System.out.println("sleep");
 				try {
 					Thread.sleep(10000);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+					e.printStackTrace(); }
 				engine.eseguiAzione(msg,1);
 			}
-		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }*/
+		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}
 	
 	public void inviaOggetto(Messaggio msg) {
-		/*try {
+		try {
 			output.writeObject(msg);
-		} catch (IOException e) { e.printStackTrace(); }*/
+		} catch (IOException e) { e.printStackTrace(); }
 	}
 	
 }

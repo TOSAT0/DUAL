@@ -46,15 +46,14 @@ public class Connessione implements Runnable{
 			output.writeObject(new Avvio((id == 0 || id == 1) ? true : false));
 		} catch (IOException e) { e.printStackTrace(); }
 		
-		/*Messaggio msg;
+		Messaggio msg;
 		try {
 			while(true) {
 				//riceve l'azione da eseguire
 				msg = (Messaggio) input.readObject();
-				
-				//if(msg.getAzione() == Azione.BULLET)
+				System.out.println("msg: "+msg.getAzione());
 			}
-		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }*/
+		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}
 	
 	/*----- GETTER E SETTER -----*/
