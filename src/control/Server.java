@@ -18,6 +18,7 @@ public class Server {
 	private boolean inizio = false;
 	
 	public Server() {
+		
 		//imposto il numero di client che si possono connettere
 		do {
 			System.out.print("Numero di client: ");
@@ -31,18 +32,18 @@ public class Server {
 		try {
 			server = new ServerSocket(10000, 5);
 			System.out.println("Server attivo\n");
-			this.connessioni();
+			this.accettaConnessione();
 		}catch(IOException e) { e.printStackTrace(); }
 	}
 	
-	public void connessioni() {
+	public void accettaConnessione() {
 		//faccio connettere il numero di client indicato
 		try {
 			for(int i=0; i<numClient; i++) {
 				System.out.println("test");
 				connessione = server.accept();
 				System.out.println("Player"+(i+1)+": "+connessione.getInetAddress()+":"+connessione.getPort()+"\n");
-				new Thread(new Connessione(this,connessione,i)).start();
+				new Thread(new Connessione(this, connessione,i)).start();
 			}
 			System.out.println("Server: OK");
 			inizio = true;

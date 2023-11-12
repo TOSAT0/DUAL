@@ -18,12 +18,16 @@ public class Connessione implements Runnable{
 	private ObjectInputStream input;
 	
 	private Server server;
+	private ComunicazioneThread ct;
 	
 	private int id;
 	
 	public Connessione(Server server, Socket connessione, int id) {
 		this.server = server;
 		this.id = id;
+		
+		this.ct = new ComunicazioneThread(this);
+		new Thread(ct).start();
 		
 		try {
 			this.connessione = connessione;
@@ -54,12 +58,18 @@ public class Connessione implements Runnable{
 				System.out.println("msg: "+msg.getAzione());
 				
 				if(msg.getAzione() == Azione.BULLET) { //1v1 (2v2)
-					//invio all'altra squadra
+					ct.setMsg(msg);
 				}else { //solo x 2v2
 					//invio alla propria squadra
 				}
 			}
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
+	}
+
+	public void inviaOggetto(Messaggio msg) {
+		try {
+			output.writeObject(msg);
+		} catch (IOException e) { e.printStackTrace(); }
 	}
 	
 	/*----- GETTER E SETTER -----*/
