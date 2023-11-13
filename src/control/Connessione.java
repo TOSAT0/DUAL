@@ -16,16 +16,12 @@ public class Connessione implements Runnable{
 	private ObjectInputStream input;
 	
 	private Server server;
-	private Buffer buffer;
 	
 	private int id;
 	
 	public Connessione(Server server, Socket connessione, int id) {
 		this.server = server;
 		this.id = id;
-		
-		this.buffer = new Buffer(this);
-		new Thread(buffer).start();
 		
 		try {
 			this.connessione = connessione;
@@ -56,7 +52,7 @@ public class Connessione implements Runnable{
 				System.out.println("msg: "+msg.getAzione());
 				
 				if(msg.getAzione() == Azione.BULLET) { //1v1 (2v2)
-					buffer.setMsg(msg);
+					server.inviaMessagio(msg, id);
 				}else { //solo x 2v2
 					//invio alla propria squadra
 				}

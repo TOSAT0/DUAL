@@ -21,6 +21,7 @@ public class Client implements Runnable{
 	
 	private GameEngine engine;
 	
+	/*IL CLIENT SI CONNETTE AL SERVER*/
 	public Client(GameEngine engine) {
 		this.engine = engine;
 		

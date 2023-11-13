@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import model.Messaggio;
 import model.Oggetto;
 
 public class Server {
@@ -17,9 +18,10 @@ public class Server {
 	private int numClient;
 	private boolean inizio = false;
 	
+	private ArrayList<Connessione> clients = new ArrayList<Connessione>();
+	
+	/*IL SERVER AVVIA LA COMUNICAZIONE*/
 	public Server() {
-		
-		//imposto il numero di client che si possono connettere
 		do {
 			System.out.print("Numero di client: ");
 			numClient = in.nextInt();
@@ -28,7 +30,6 @@ public class Server {
 			}
 		}while(numClient != 2 && numClient != 4);
 		
-		//avvio il server
 		try {
 			server = new ServerSocket(10000, 5);
 			System.out.println("Server attivo\n");
@@ -36,20 +37,32 @@ public class Server {
 		}catch(IOException e) { e.printStackTrace(); }
 	}
 	
+//-------------------- ALTRI METODI ----------------------------------------//
+	
+	/*IL SERVER ACCETTA LA CONNESSIONE DEL CLIENT E LA SALVA IN UN ARRAY LIST*/
 	public void accettaConnessione() {
-		//faccio connettere il numero di client indicato
 		try {
 			for(int i=0; i<numClient; i++) {
 				connessione = server.accept();
 				System.out.println("Player"+(i+1)+": "+connessione.getInetAddress()+":"+connessione.getPort());
-				new Thread(new Connessione(this, connessione,i)).start();
+				clients.add(new Connessione(this, connessione,i));
+				new Thread(clients.get(i)).start();
 			}
 			System.out.println("Server: OK");
 			inizio = true;
 		}catch(IOException e) { e.printStackTrace(); }
 	}
 	
-	/*----- GETTER E SETTER -----*/
+	/*INVIA MESSAGGIO AD UN ALTRO THREAD*/
+	public void inviaMessagio(Messaggio msg, int id) {
+		if(id == 0)
+			id = 1;
+		else
+			id = 0;
+		clients.get(id).inviaOggetto(msg);
+	}
+	
+//-------------------- GETTER E SETTER --------------------//
 	
 	public boolean getInizio() {
 		return this.inizio;
