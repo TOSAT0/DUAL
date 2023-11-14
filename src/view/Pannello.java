@@ -30,6 +30,7 @@ public class Pannello extends JPanel{
 	
 	private ArrayList<Giocatore> giocatori = new ArrayList<Giocatore>();
 	private ArrayList<Proiettile> proiettili = new ArrayList<Proiettile>();
+	private ArrayList<Proiettile> proiettili_nemici = new ArrayList<Proiettile>();
 	
 	private BufferedImage[] giocatore1Style;
 	private BufferedImage proiettileSquadraStyle;
@@ -63,24 +64,46 @@ public class Pannello extends JPanel{
         for(Proiettile og : proiettili) {
             g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
         }
+        for(Proiettile og : proiettili_nemici) {
+            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
+        }
     }
 	
 	public void aggiornaPosizione() {
-		int controllo;
+		boolean controllo;
 		ArrayList<Proiettile> elimina = new ArrayList<Proiettile>();
 		for(Giocatore g : giocatori) {
             g.aggiornaPosizione();
         }
         for(Proiettile p : proiettili) {
             controllo = p.aggiornaPosizione();
-            if(controllo != 0) {
+            if(controllo) {
         		elimina.add(p);
-        		if(controllo == 1 && (GameEngine.id == 0 || GameEngine.id == 1))
+        		if(GameEngine.id == 0 || GameEngine.id == 1)
         			engine.inviaAzione(new Messaggio(p.getPotenza(), (int) p.getX(), GameEngine.id, Azione.BULLET));
+        	}
+        }
+        for(Proiettile p : proiettili_nemici) {
+            controllo = p.aggiornaPosizione();
+            if(controllo) {
+        		elimina.add(p);
         	}
         }
         for(Proiettile p : elimina)
         	proiettili.remove(p);
+	}
+	
+	public void controlloHitbox() {
+		ArrayList<Proiettile> elimina = new ArrayList<Proiettile>();
+		for(Proiettile p : proiettili_nemici) {
+			for(Giocatore g : giocatori) {
+				if(p.getHitbox().intersects(g.getHitbox())) {
+					elimina.add(p);
+					g.setVita(g.getVita()-p.getPotenza());
+					System.out.println("Vita: "+g.getVita()); //<-TODO:ELIMINARE
+				}
+			}
+		}
 	}
 
 //---------- AZIONI ------------------------------//
@@ -129,8 +152,8 @@ public class Pannello extends JPanel{
 	
 	//BULLET
 	public void bullet(int potenza, int x) {
-		proiettili.add(new Proiettile(x*GameEngine.P, 0, potenza*16*GameEngine.P, potenza*16*GameEngine.P, proiettileNemicoStyle, potenza));
-		proiettili.get(proiettili.size()-1).setVelY(2);
+		proiettili_nemici.add(new Proiettile(x*GameEngine.P, 0, potenza*16*GameEngine.P, potenza*16*GameEngine.P, proiettileNemicoStyle, potenza));
+		proiettili_nemici.get(proiettili_nemici.size()-1).setVelY(2);
 	}
 
 //---------- STILE DEI GIOCATORI ------------------------------//

@@ -22,7 +22,7 @@ public class GameEngine implements Runnable{
 	public static double P = (Toolkit.getDefaultToolkit().getScreenSize().getHeight())/1080;
 	
 	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), id, clients = 0;
-	private int proiettili, x, y, vita;
+	private int proiettili, x, y;
 	
 	private InputManager inputManager;
 	private Pannello pannello;
@@ -45,7 +45,6 @@ public class GameEngine implements Runnable{
 		pannello = new Pannello(this, height, width);
 		
 		proiettili = 10;
-		vita = 20;
 		
 		//posizione in cui collocare la finestra
 		x = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() - width)/2;
@@ -93,7 +92,8 @@ public class GameEngine implements Runnable{
 	
 	/*RICEVE L'AZIONE DALL'INPUT MANAGER/PANNELLO E LA INVIA AL CLIENT*/
 	public void inviaAzione(Messaggio msg) {
-		client.inviaOggetto(msg);
+		if(GameEngine.clients > 2 || msg.getAzione() == Azione.BULLET)
+			client.inviaOggetto(msg);
 	}
 	
 	/*INCREMENTA PROGRESSIVAMENTE IL NUMERO DI PROIETTILI*/
@@ -119,6 +119,9 @@ public class GameEngine implements Runnable{
 			
 			//disegno degli oggetti presenti dentro all'array
 			pannello.repaint();
+			
+			//controllo le collisioni
+			pannello.controlloHitbox();
 			
 			//gestione della ricarica dei proiettili
 			if(proiettili < 10) {

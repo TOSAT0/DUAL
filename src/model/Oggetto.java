@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import control.GameEngine;
@@ -22,7 +23,7 @@ public class Oggetto {
 		this.style = style;
 	}
 
-	public int aggiornaPosizione() {
+	public boolean aggiornaPosizione() {
 		if(velX == 1) {
 			if(x+30 <= GameEngine.width-255)
 				x+=30;
@@ -50,14 +51,14 @@ public class Oggetto {
 		if(velY == 2) {
 			y+=60;
 			if(y>GameEngine.height)
-				return -1; //proiettile tocca il bordo inferiore dello schermo
+				return true;
 		}
 		if(velY == -2) {
 			y-=60;
 			if(y < 0)
-				return 1; //proiettile tocca il bordo superiore dello schermo
+				return true;
 		}
-		return 0; //niente
+		return false;
 	}
 	
 //-------------------- GETTER E SETTER --------------------//
@@ -116,6 +117,10 @@ public class Oggetto {
 
 	public void setDy(double dy) {
 		this.dy = dy;
+	}
+	
+	public Rectangle getHitbox() {
+		return new Rectangle((int)x, (int)y, (int)dx, (int)dy);
 	}
 	
 }
