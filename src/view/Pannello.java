@@ -54,10 +54,10 @@ public class Pannello extends JPanel{
         Graphics2D g2D = (Graphics2D) g.create();
         
         for(Giocatore og : giocatori) {
-            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), 15*15, 11*15, null);
+            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)(15*15*GameEngine.P), (int)(11*15*GameEngine.P), null);
         }
         for(Proiettile og : proiettili) {
-            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), og.getPotenza()*16, (int)og.getPotenza()*16, null);
+            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)(og.getPotenza()*16*GameEngine.P), (int)(og.getPotenza()*16*GameEngine.P), null);
         }
     }
 	
@@ -125,7 +125,7 @@ public class Pannello extends JPanel{
 	
 	//BULLET
 	public void bullet(int potenza, int x) {
-		proiettili.add(new Proiettile(x, 0, proiettileNemicoStyle, potenza));
+		proiettili.add(new Proiettile(x*GameEngine.P, 0, proiettileNemicoStyle, potenza));
 		proiettili.get(proiettili.size()-1).setVelY(2);
 	}
 

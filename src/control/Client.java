@@ -59,6 +59,8 @@ public class Client implements Runnable{
 	/*INVIA MESSAGGI AL SERVER*/
 	public void inviaOggetto(Messaggio msg) {
 		try {
+			if(msg.getAzione() == Azione.BULLET)
+				msg.setX((int)(msg.getX()/GameEngine.P));
 			output.writeObject(msg);
 		} catch (IOException e) { e.printStackTrace(); }
 	}

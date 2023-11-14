@@ -19,7 +19,9 @@ import view.CaricaImmagine;
 import view.Pannello;
 
 public class GameEngine implements Runnable{
-	public static int height = 800, width = 1500, x, y;
+	public static double P = (Toolkit.getDefaultToolkit().getScreenSize().getHeight())/1080;
+	
+	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), x, y;
 	private int proiettili;
 	
 	private final InputManager inputManager;

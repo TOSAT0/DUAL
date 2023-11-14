@@ -46,7 +46,7 @@ public class Oggetto {
 		}
 		if(velY == 2) {
 			y+=60;
-			if(y>GameEngine.height-170)
+			if(y>GameEngine.height)
 				return -1; //proiettile tocca il bordo inferiore dello schermo
 		}
 		if(velY == -2) {
