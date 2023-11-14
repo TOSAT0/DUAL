@@ -27,10 +27,10 @@ public class Server {
 		do {
 			System.out.print("Numero di client: ");
 			numClient = in.nextInt();
-			if(numClient != 2 && numClient != 4) {
+			if(numClient < 2 || numClient%2 != 0) {
 				System.out.println("Numero non valido");
 			}
-		}while(numClient != 2 && numClient != 4);
+		}while(numClient < 2 || numClient%2 != 0);
 		try {
 			server = new ServerSocket(10000, 5);
 			System.out.println("Server attivo\n");
