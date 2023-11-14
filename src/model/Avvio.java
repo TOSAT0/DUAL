@@ -4,17 +4,25 @@ import java.io.Serializable;
 
 public class Avvio implements Serializable{
 	
-	private boolean invia;
+	private int id, n;
 	
-	public Avvio(boolean invia) {
-		this.invia = invia;
+	public Avvio(int id, int n) {
+		this.id = id;
+		this.n = n;
 	}
 	
-	public void setInvia(boolean invia) {
-		this.invia = invia;
+	public void setId(int id) {
+		this.id = id;
 	}
-	public boolean getInvia() {
-		return this.invia;
+	public int getId() {
+		return this.id;
+	}
+	
+	public void setN(int n) {
+		this.n = n;
+	}
+	public int getN() {
+		return this.n;
 	}
 	
 }

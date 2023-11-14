@@ -30,7 +30,7 @@ public class InputManager implements KeyListener{
 	
 	public void eseguiAzione(Messaggio msg) {
 		if(msg.getAzione() != null)
-			engine.eseguiAzione(msg, 0);
+			engine.eseguiAzione(msg);
 		
 		if(msg.getAzione() != null) // <- TODO:ELIMINARE
 			System.out.println("Action: " + msg.getAzione());
@@ -92,8 +92,8 @@ public class InputManager implements KeyListener{
 			}
 		}
 		
-		eseguiAzione(new Messaggio(-1, -1, azione));
-		inviaAzione(new Messaggio(-1, -1, azione));
+		eseguiAzione(new Messaggio(-1, -1, GameEngine.id, azione));
+		inviaAzione(new Messaggio(-1, -1, GameEngine.id, azione));
 	}
 
 	@Override
@@ -126,8 +126,8 @@ public class InputManager implements KeyListener{
 			azione = Azione.NRIGHT;
 		}
 		
-		eseguiAzione(new Messaggio(potenza, -1, azione));
-		inviaAzione(new Messaggio(potenza, -1, azione));
+		eseguiAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
+		inviaAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
 	}
 	
 }

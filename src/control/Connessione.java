@@ -17,11 +17,8 @@ public class Connessione implements Runnable{
 	
 	private Server server;
 	
-	private int id;
-	
-	public Connessione(Server server, Socket connessione, int id) {
+	public Connessione(Server server, Socket connessione) {
 		this.server = server;
-		this.id = id;
 		
 		try {
 			this.connessione = connessione;
@@ -34,22 +31,11 @@ public class Connessione implements Runnable{
 	
 	/*ATTENDE L'ARRIVO DI MESSAGGI DAL CLIENT*/
 	public void run() {
-		try {
-			while(!server.getInizio()) {
-				Thread.sleep(1000);
-			}
-		} catch (InterruptedException e) { e.printStackTrace(); }
-		System.out.println("Comunicazione pronta");
-		
-		try {
-			output.writeObject(new Avvio((id == 0 || id == 1) ? true : false));
-		} catch (IOException e) { e.printStackTrace(); }
-		
 		Messaggio msg;
 		try {
 			while(true) {
 				msg = (Messaggio) input.readObject();
-				server.inviaMessagio(msg, id);
+				server.inviaMessagio(msg);
 			}
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}
@@ -57,9 +43,9 @@ public class Connessione implements Runnable{
 //-------------------- ALTRI METODI ------------------------------//
 	
 	/*INVIA MESSAGGI AL CLIENT*/
-	public void inviaOggetto(Messaggio msg) {
+	public void inviaOggetto(Object o) {
 		try {
-			output.writeObject(msg);
+			output.writeObject(o);
 		} catch (IOException e) { e.printStackTrace(); }
 	}
 }

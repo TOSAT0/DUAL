@@ -21,8 +21,8 @@ import view.Pannello;
 public class GameEngine implements Runnable{
 	public static double P = (Toolkit.getDefaultToolkit().getScreenSize().getHeight())/1080;
 	
-	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), x, y;
-	private int proiettili;
+	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), id, clients;
+	private int proiettili, x, y;
 	
 	private final InputManager inputManager;
 	private final Pannello pannello;
@@ -30,7 +30,7 @@ public class GameEngine implements Runnable{
 	private final Thread tclient;
 	private Timer timer;
 	
-	private boolean carica = false, inizio = false, invia;
+	private boolean carica = false, inizio = false;
 	
 	public GameEngine() {
 		inputManager = new InputManager(this);
@@ -63,30 +63,30 @@ public class GameEngine implements Runnable{
 //-------------------- METODI GENERICI ----------------------------------------//
 	
 	/*RICEVE L'AZIONE DELL'INPUT MANAGER/SERVER E LA ELABORA*/
-	public void eseguiAzione(Messaggio msg, int id) { //id - 0: azione proveniente dall'input - 1: azione proveniente dal server
+	public void eseguiAzione(Messaggio msg) { //id - 0: azione proveniente dall'input - 1: azione proveniente dal server
 		if(msg.getAzione() == Azione.UP)
-			pannello.up(id);
+			pannello.up(msg.getId()/2);
 		if(msg.getAzione() == Azione.DOWN)
-			pannello.down(id);
+			pannello.down(msg.getId()/2);
 		if(msg.getAzione() == Azione.LEFT)
-			pannello.left(id);
+			pannello.left(msg.getId()/2);
 		if(msg.getAzione() == Azione.RIGHT)
-			pannello.right(id);
+			pannello.right(msg.getId()/2);
 		if(msg.getAzione() == Azione.NUP)
-			pannello.nup(id);
+			pannello.nup(msg.getId()/2);
 		if(msg.getAzione() == Azione.NDOWN)
-			pannello.ndown(id);
+			pannello.ndown(msg.getId()/2);
 		if(msg.getAzione() == Azione.NLEFT)
-			pannello.nleft(id);
+			pannello.nleft(msg.getId()/2);
 		if(msg.getAzione() == Azione.NRIGHT)
-			pannello.nright(id);
+			pannello.nright(msg.getId()/2);
 		if(msg.getAzione() == Azione.SHOOT)
-			pannello.shoot(msg.getPotenza(), id);
+			pannello.shoot(msg.getPotenza(), msg.getId()/2);
 		if(msg.getAzione() == Azione.BULLET)
-			pannello.bullet(msg.getPotenza(), msg.getX());
+			pannello.bullet(msg.getPotenza(), msg.getX()/2);
 	}
 	
-	/*RICEVE L'AZIONE DALL'INPUT MANAGER E LA INVIA AL CLIENT*/
+	/*RICEVE L'AZIONE DALL'INPUT MANAGER/PANNELLO E LA INVIA AL CLIENT*/
 	public void inviaAzione(Messaggio msg) {
 		client.inviaOggetto(msg);
 	}
@@ -159,13 +159,6 @@ public class GameEngine implements Runnable{
 	}
 	public boolean getInizio() {
 		return this.inizio;
-	}
-	
-	public void setInvia(boolean invia) {
-		this.invia = invia;
-	}
-	public boolean getInvia() {
-		return this.invia;
 	}
 	
 }

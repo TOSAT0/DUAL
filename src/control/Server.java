@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import model.Avvio;
 import model.Messaggio;
 import model.Messaggio.Azione;
 import model.Oggetto;
@@ -46,22 +47,29 @@ public class Server {
 			for(int i=0; i<numClient; i++) {
 				connessione = server.accept();
 				System.out.println("Player"+(i+1)+": "+connessione.getInetAddress()+":"+connessione.getPort());
-				clients.add(new Connessione(this, connessione,i));
+				clients.add(new Connessione(this, connessione));
 				new Thread(clients.get(i)).start();
 			}
 			System.out.println("Server: OK");
-			inizio = true;
+			inviaAvvio();
 		}catch(IOException e) { e.printStackTrace(); }
 	}
 	
+	/*IL SERVER INVIA A TUTTI I CLIENT UN MESSAGGIO DI AVVIO E IL LORO ID*/
+	public void inviaAvvio() {
+		for(int i=0; i<numClient; i++) {
+			clients.get(i).inviaOggetto(new Avvio(i, numClient));
+		}
+	}
+	
 	/*INVIA MESSAGGIO AD UN ALTRO THREAD*/
-	public void inviaMessagio(Messaggio msg, int id) {
+	public void inviaMessagio(Messaggio msg) {
 		System.out.println("msg_server: "+msg.getAzione());
 		if(msg.getAzione() == Azione.BULLET) {
-			if(id == 0) {
+			if(msg.getId() == 0) {
 				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}
-			if(id == 1) {
+			if(msg.getId() == 1) {
 				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}
 		}else {

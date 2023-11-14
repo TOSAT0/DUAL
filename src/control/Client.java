@@ -41,7 +41,8 @@ public class Client implements Runnable{
 		try {
 			Avvio avvio = (Avvio) input.readObject();
 			engine.setInizio(true);
-			engine.setInvia(avvio.getInvia());
+			GameEngine.id = avvio.getId();
+			GameEngine.clients = avvio.getN();
 			System.out.println("Server: OK"); // <-TODO: ELIMINARE
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
@@ -49,7 +50,7 @@ public class Client implements Runnable{
 		try {
 			while(true) {
 				msg = (Messaggio) input.readObject();
-				engine.eseguiAzione(msg,1);
+				engine.eseguiAzione(msg);
 			}
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}

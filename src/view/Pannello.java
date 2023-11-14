@@ -49,6 +49,12 @@ public class Pannello extends JPanel{
 
 //---------- METODI ------------------------------//
 	
+	public void inizializzaArrayGiocatori() {
+		for(int i=0; i< GameEngine.clients/2; i++) {
+			giocatori.add(new Giocatore(750,350,giocatore1Style[10]));
+		}
+	}
+	
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g.create();
@@ -71,8 +77,8 @@ public class Pannello extends JPanel{
             controllo = p.aggiornaPosizione();
             if(controllo != 0) {
         		elimina.add(p);
-        		if(controllo == 1 && engine.getInvia())
-        			engine.inviaAzione(new Messaggio(p.getPotenza(), (int) p.getX(), Azione.BULLET));
+        		if(controllo == 1 && (GameEngine.id == 0 || GameEngine.id == 1))
+        			engine.inviaAzione(new Messaggio(p.getPotenza(), (int) p.getX(), GameEngine.id, Azione.BULLET));
         	}
         }
         for(Proiettile p : elimina)
