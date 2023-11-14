@@ -89,8 +89,10 @@ public class Pannello extends JPanel{
         		elimina.add(p);
         	}
         }
-        for(Proiettile p : elimina)
+        for(Proiettile p : elimina) {
         	proiettili.remove(p);
+        	proiettili_nemici.remove(p);
+        }
 	}
 	
 	public void controlloHitbox() {
@@ -104,6 +106,8 @@ public class Pannello extends JPanel{
 				}
 			}
 		}
+		for(Proiettile p : elimina)
+			proiettili_nemici.remove(p);
 	}
 
 //---------- AZIONI ------------------------------//
