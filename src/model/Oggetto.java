@@ -33,10 +33,10 @@ public class Oggetto {
 				x=0;
 		}
 		if(velY == 1) {
-			if(y+30 <= GameEngine.height-150)
+			if(y+30 <= GameEngine.height-170)
 				y+=30;
 			else
-				y=GameEngine.height-150;
+				y=GameEngine.height-170;
 		}
 		if(velY == -1) {
 			if(y-30 >= 0)
@@ -46,7 +46,7 @@ public class Oggetto {
 		}
 		if(velY == 2) {
 			y+=60;
-			if(y>GameEngine.height-225)
+			if(y>GameEngine.height-170)
 				return -1; //proiettile tocca il bordo inferiore dello schermo
 		}
 		if(velY == -2) {

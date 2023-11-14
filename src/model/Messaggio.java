@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Messaggio implements Serializable{
 	
-	private int potenza, x, y; //BULLET
+	private int potenza, x; //BULLET
 	private Azione azione;
 	
 	public enum Azione {
@@ -21,10 +21,9 @@ public class Messaggio implements Serializable{
 		NONE
 	}
 	
-	public Messaggio(int potenza, int x, int y, Azione azione) {
+	public Messaggio(int potenza, int x, Azione azione) {
 		this.potenza = potenza;
 		this.x = x;
-		this.y = y;
 		this.azione = azione;
 	}
 	
@@ -42,13 +41,6 @@ public class Messaggio implements Serializable{
 	}
 	public void setX(int x) {
 		this.x = x;
-	}
-	
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
 	}
 
 	public Azione getAzione() {

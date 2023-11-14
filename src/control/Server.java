@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.Messaggio;
+import model.Messaggio.Azione;
 import model.Oggetto;
 
 public class Server {
@@ -55,11 +56,17 @@ public class Server {
 	
 	/*INVIA MESSAGGIO AD UN ALTRO THREAD*/
 	public void inviaMessagio(Messaggio msg, int id) {
-		if(id == 0)
-			id = 1;
-		else
-			id = 0;
-		clients.get(id).inviaOggetto(msg);
+		System.out.println("msg_server: "+msg.getAzione());
+		if(msg.getAzione() == Azione.BULLET) {
+			if(id == 0) {
+				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
+			}
+			if(id == 1) {
+				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
+			}
+		}else {
+			//altre azioni
+		}
 	}
 	
 //-------------------- GETTER E SETTER --------------------//

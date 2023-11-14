@@ -81,7 +81,7 @@ public class GameEngine implements Runnable{
 		if(msg.getAzione() == Azione.SHOOT)
 			pannello.shoot(msg.getPotenza(), id);
 		if(msg.getAzione() == Azione.BULLET)
-			pannello.bullet(msg.getPotenza(), msg.getX(), msg.getY());
+			pannello.bullet(msg.getPotenza(), msg.getX());
 	}
 	
 	/*RICEVE L'AZIONE DALL'INPUT MANAGER E LA INVIA AL CLIENT*/

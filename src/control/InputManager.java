@@ -92,8 +92,8 @@ public class InputManager implements KeyListener{
 			}
 		}
 		
-		eseguiAzione(new Messaggio(-1, -1, -1, azione));
-		inviaAzione(new Messaggio(-1, -1, -1, azione));
+		eseguiAzione(new Messaggio(-1, -1, azione));
+		inviaAzione(new Messaggio(-1, -1, azione));
 	}
 
 	@Override
@@ -126,8 +126,8 @@ public class InputManager implements KeyListener{
 			azione = Azione.NRIGHT;
 		}
 		
-		eseguiAzione(new Messaggio(potenza, -1, -1, azione));
-		inviaAzione(new Messaggio(potenza, -1, -1, azione));
+		eseguiAzione(new Messaggio(potenza, -1, azione));
+		inviaAzione(new Messaggio(potenza, -1, azione));
 	}
 	
 }

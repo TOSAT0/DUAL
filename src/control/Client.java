@@ -49,10 +49,6 @@ public class Client implements Runnable{
 		try {
 			while(true) {
 				msg = (Messaggio) input.readObject();
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) { e.printStackTrace(); }
-				System.out.println("msg: "+msg.getAzione()); // <-TODO:ELIMINARE
 				engine.eseguiAzione(msg,1);
 			}
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }

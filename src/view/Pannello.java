@@ -72,7 +72,7 @@ public class Pannello extends JPanel{
             if(controllo != 0) {
         		elimina.add(p);
         		if(controllo == 1 && engine.getInvia())
-        			engine.inviaAzione(new Messaggio(p.getPotenza(), (int) p.getX(), (int) p.getY(), Azione.BULLET));
+        			engine.inviaAzione(new Messaggio(p.getPotenza(), (int) p.getX(), Azione.BULLET));
         	}
         }
         for(Proiettile p : elimina)
@@ -124,8 +124,8 @@ public class Pannello extends JPanel{
 	}
 	
 	//BULLET
-	public void bullet(int potenza, int x, int y) {
-		proiettili.add(new Proiettile(x, y, proiettileNemicoStyle, potenza));
+	public void bullet(int potenza, int x) {
+		proiettili.add(new Proiettile(x, 0, proiettileNemicoStyle, potenza));
 		proiettili.get(proiettili.size()-1).setVelY(2);
 	}
 
