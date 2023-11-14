@@ -5,7 +5,6 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-import model.Avvio;
 import model.Messaggio;
 import model.Messaggio.Azione;
 

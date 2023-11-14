@@ -21,24 +21,28 @@ import view.Pannello;
 public class GameEngine implements Runnable{
 	public static double P = (Toolkit.getDefaultToolkit().getScreenSize().getHeight())/1080;
 	
-	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), id, clients;
+	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), id, clients = 0;
 	private int proiettili, x, y;
 	
-	private final InputManager inputManager;
-	private final Pannello pannello;
-	private final Client client;
-	private final Thread tclient;
+	private InputManager inputManager;
+	private Pannello pannello;
+	private Client client;
+	private Thread tclient;
 	private Timer timer;
 	
 	private boolean carica = false, inizio = false;
 	
 	public GameEngine() {
 		inputManager = new InputManager(this);
-		pannello = new Pannello(this, height, width);
-		//c = null;
 		client = new Client(this);
 		tclient = new Thread(client);
 		tclient.start();
+		while(clients == 0) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) { e.printStackTrace(); }
+		}
+		pannello = new Pannello(this, height, width);
 		
 		proiettili = 10;
 		
@@ -104,7 +108,7 @@ public class GameEngine implements Runnable{
 		//fino a quanto non sono connessi tutti i client
 		while(!inizio) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) { e.printStackTrace(); }
 		}
 		

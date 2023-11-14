@@ -4,7 +4,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import model.Avvio;
+import model.Configurazione;
 import model.Messaggio;
 import model.Oggetto;
 import model.Messaggio.Azione;
@@ -39,10 +39,14 @@ public class Client implements Runnable{
 	/*ATTENDE L'ARRIVO DI MESSAGGI DAL SERVER*/
 	public void run() {
 		try {
-			Avvio avvio = (Avvio) input.readObject();
+			Configurazione config = (Configurazione) input.readObject();
+			GameEngine.clients = config.getNum();
+		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
+		
+		try {
+			Configurazione config = (Configurazione) input.readObject();
 			engine.setInizio(true);
-			GameEngine.id = avvio.getId();
-			GameEngine.clients = avvio.getN();
+			GameEngine.id = config.getNum();
 			System.out.println("Server: OK"); // <-TODO: ELIMINARE
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		

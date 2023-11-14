@@ -43,16 +43,14 @@ public class Pannello extends JPanel{
         proiettileSquadraStyle = immagine.immagine("proiettile-squadra");
         proiettileNemicoStyle = immagine.immagine("proiettile-nemico");
         
-        Giocatore gt = new Giocatore(750,350,giocatore1Style[10]);
-        giocatori.add(gt);
+        inizializzaArrayGiocatori();
 	}
 
 //---------- METODI ------------------------------//
 	
 	public void inizializzaArrayGiocatori() {
-		for(int i=0; i< GameEngine.clients/2; i++) {
+		for(int i=0; i < GameEngine.clients/2; i++)
 			giocatori.add(new Giocatore(750,350,giocatore1Style[10]));
-		}
 	}
 	
 	public void paintComponent(Graphics g) {

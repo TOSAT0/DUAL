@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import model.Avvio;
+import model.Configurazione;
 import model.Messaggio;
 import model.Messaggio.Azione;
 import model.Oggetto;
@@ -31,7 +31,6 @@ public class Server {
 				System.out.println("Numero non valido");
 			}
 		}while(numClient != 2 && numClient != 4);
-		
 		try {
 			server = new ServerSocket(10000, 5);
 			System.out.println("Server attivo\n");
@@ -48,6 +47,7 @@ public class Server {
 				connessione = server.accept();
 				System.out.println("Player"+(i+1)+": "+connessione.getInetAddress()+":"+connessione.getPort());
 				clients.add(new Connessione(this, connessione));
+				clients.get(i).inviaOggetto(new Configurazione(numClient));
 				new Thread(clients.get(i)).start();
 			}
 			System.out.println("Server: OK");
@@ -58,7 +58,7 @@ public class Server {
 	/*IL SERVER INVIA A TUTTI I CLIENT UN MESSAGGIO DI AVVIO E IL LORO ID*/
 	public void inviaAvvio() {
 		for(int i=0; i<numClient; i++) {
-			clients.get(i).inviaOggetto(new Avvio(i, numClient));
+			clients.get(i).inviaOggetto(new Configurazione(i));
 		}
 	}
 	
