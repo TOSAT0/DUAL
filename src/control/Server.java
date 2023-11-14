@@ -73,7 +73,11 @@ public class Server {
 				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}
 		}else {
-			//altre azioni
+			if(msg.getId()%2 == 0) {
+				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
+			}else {
+				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
+			}
 		}
 	}
 	
