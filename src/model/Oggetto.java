@@ -9,11 +9,14 @@ import view.Pannello;
 public class Oggetto {
 	
 	private BufferedImage style;
-	private double x, y, velX, velY;
+	private double x, y, dx, dy;
+	private int velX, velY;
 	
-	public Oggetto(double x, double y, BufferedImage style) {
+	public Oggetto(double x, double y, double dx, double dy, BufferedImage style) {
 		this.x = x;
 		this.y = y;
+		this.dx = dx;
+		this.dy = dy;
 		this.velX = 0;
 		this.velY = 0;
 		this.style = style;
@@ -83,20 +86,36 @@ public class Oggetto {
 		this.y = y;
 	}
 
-	public double getVelX() {
+	public int getVelX() {
 		return velX;
 	}
 
-	public void setVelX(double velX) {
+	public void setVelX(int velX) {
 		this.velX = velX;
 	}
 
-	public double getVelY() {
+	public int getVelY() {
 		return velY;
 	}
 
-	public void setVelY(double velY) {
+	public void setVelY(int velY) {
 		this.velY = velY;
+	}
+
+	public double getDx() {
+		return dx;
+	}
+
+	public void setDx(double dx) {
+		this.dx = dx;
+	}
+
+	public double getDy() {
+		return dy;
+	}
+
+	public void setDy(double dy) {
+		this.dy = dy;
 	}
 	
 }

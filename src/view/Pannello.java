@@ -50,7 +50,7 @@ public class Pannello extends JPanel{
 	
 	public void inizializzaArrayGiocatori() {
 		for(int i=0; i < GameEngine.clients/2; i++)
-			giocatori.add(new Giocatore(750,350,giocatore1Style[10]));
+			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatore1Style[10]));
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -58,10 +58,10 @@ public class Pannello extends JPanel{
         Graphics2D g2D = (Graphics2D) g.create();
         
         for(Giocatore og : giocatori) {
-            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)(15*15*GameEngine.P), (int)(11*15*GameEngine.P), null);
+            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
         }
         for(Proiettile og : proiettili) {
-            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)(og.getPotenza()*16*GameEngine.P), (int)(og.getPotenza()*16*GameEngine.P), null);
+            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
         }
     }
 	
@@ -123,13 +123,13 @@ public class Pannello extends JPanel{
 	
 	//SHOOT
 	public void shoot(int potenza, int i) {
-		proiettili.add(new Proiettile((giocatori.get(i).getX()+15*15/2)-(potenza*8), giocatori.get(i).getY()-(potenza*8), proiettileSquadraStyle, potenza));
+		proiettili.add(new Proiettile((giocatori.get(i).getX()+15*15/2)-(potenza*8), giocatori.get(i).getY()-(potenza*8), potenza*16*GameEngine.P, potenza*16*GameEngine.P, proiettileSquadraStyle, potenza));
 		proiettili.get(proiettili.size()-1).setVelY(-2);
 	}
 	
 	//BULLET
 	public void bullet(int potenza, int x) {
-		proiettili.add(new Proiettile(x*GameEngine.P, 0, proiettileNemicoStyle, potenza));
+		proiettili.add(new Proiettile(x*GameEngine.P, 0, potenza*16*GameEngine.P, potenza*16*GameEngine.P, proiettileNemicoStyle, potenza));
 		proiettili.get(proiettili.size()-1).setVelY(2);
 	}
 

@@ -22,7 +22,7 @@ public class GameEngine implements Runnable{
 	public static double P = (Toolkit.getDefaultToolkit().getScreenSize().getHeight())/1080;
 	
 	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), id, clients = 0;
-	private int proiettili, x, y;
+	private int proiettili, x, y, vita;
 	
 	private InputManager inputManager;
 	private Pannello pannello;
@@ -45,6 +45,7 @@ public class GameEngine implements Runnable{
 		pannello = new Pannello(this, height, width);
 		
 		proiettili = 10;
+		vita = 20;
 		
 		//posizione in cui collocare la finestra
 		x = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() - width)/2;

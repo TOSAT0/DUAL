@@ -6,8 +6,8 @@ public class Giocatore extends Oggetto{
 	
 	public int vita;
 	
-	public Giocatore(double x, double y, BufferedImage style) {
-		super(x, y, style);
+	public Giocatore(double x, double y, double dx, double dy, BufferedImage style) {
+		super(x, y, dx, dy, style);
 		this.vita = 100;
 	}
 	
