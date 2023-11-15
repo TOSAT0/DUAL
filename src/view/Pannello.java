@@ -170,8 +170,8 @@ public class Pannello extends JPanel{
 		return style;
 	}
 	
-	public void setPlayer1Style(int i) {
-		giocatori.get(0).setStyle(giocatore1Style[i]);
+	public void setPlayer1Style(int id, int i) {
+		giocatori.get(id).setStyle(giocatore1Style[i]);
 	}
 	
 }

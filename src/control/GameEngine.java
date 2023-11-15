@@ -100,7 +100,7 @@ public class GameEngine implements Runnable{
 	ActionListener ricarica = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 			proiettili++;
-			pannello.setPlayer1Style(proiettili);
+			pannello.setPlayer1Style((int)id/2, proiettili);
 			System.out.println("+p: "+proiettili);
 		}
 	};
@@ -155,7 +155,7 @@ public class GameEngine implements Runnable{
 	
 	public void setProiettili(int p) {
 		this.proiettili = p;
-		pannello.setPlayer1Style(proiettili);
+		pannello.setPlayer1Style((int)id/2, proiettili);
 		System.out.println("-p: "+p);
 	}
 	public int getProiettili() {
