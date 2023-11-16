@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Giocatore extends Oggetto{
 	
-	public int vita;
+	private int vita;
 	
 	public Giocatore(double x, double y, double dx, double dy, BufferedImage style) {
 		super(x, y, dx, dy, style);
@@ -17,6 +17,12 @@ public class Giocatore extends Oggetto{
 	
 	public void setVita(int vita) {
 		this.vita = vita;
+	}
+	
+	public boolean isVivo() {
+		if(vita == 0)
+			return false;
+		return true;
 	}
 	
 }

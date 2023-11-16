@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -27,22 +29,25 @@ public class Pannello extends JPanel{
 	private GameEngine engine;
 	
 	private CaricaImmagine immagine = new CaricaImmagine();
+	private CaricaFont font = new CaricaFont();
 	
 	private ArrayList<Giocatore> giocatori = new ArrayList<Giocatore>();
 	private ArrayList<Proiettile> proiettili = new ArrayList<Proiettile>();
 	private ArrayList<Proiettile> proiettili_nemici = new ArrayList<Proiettile>();
 	
-	private BufferedImage[] giocatore1Style;
+	private BufferedImage[] giocatoreStyle;
 	private BufferedImage proiettileSquadraStyle;
 	private BufferedImage proiettileNemicoStyle;
+	private BufferedImage vuoto;
 	
 	public Pannello(GameEngine engine, int height, int width) {
 		this.engine = engine;
 		
         setPreferredSize(new Dimension(width, height));
-        giocatore1Style = getGiocatoreStyle("player1-");
+        giocatoreStyle = getGiocatoreStyle("player-");
         proiettileSquadraStyle = immagine.immagine("proiettile-squadra");
         proiettileNemicoStyle = immagine.immagine("proiettile-nemico");
+        vuoto = immagine.immagine("vuoto");
         
         inizializzaArrayGiocatori();
 	}
@@ -51,7 +56,7 @@ public class Pannello extends JPanel{
 	
 	public void inizializzaArrayGiocatori() {
 		for(int i=0; i < GameEngine.clients/2; i++)
-			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatore1Style[i]));
+			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatoreStyle[i]));
 		this.setPlayer1Style(10);
 	}
 	
@@ -68,6 +73,9 @@ public class Pannello extends JPanel{
         for(Proiettile og : proiettili_nemici) {
             g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
         }
+        
+        g2D.setFont(font.getFont(75));
+        g2D.drawString(String.valueOf(giocatori.get(GameEngine.id/2).getVita()*5)+"%", 25, 75);
     }
 	
 	public void aggiornaPosizione() {
@@ -101,9 +109,15 @@ public class Pannello extends JPanel{
 		for(Proiettile p : proiettili_nemici) {
 			for(Giocatore g : giocatori) {
 				if(p.getHitbox().intersects(g.getHitbox())) {
-					elimina.add(p);
-					g.setVita(g.getVita()-p.getPotenza());
-					System.out.println("Vita: "+g.getVita()); //<-TODO:ELIMINARE
+					if(g.isVivo())
+						elimina.add(p);
+					if(g.getVita() - p.getPotenza() > 0) {
+						g.setVita(g.getVita()-p.getPotenza());
+					}else {
+						g.setVita(0);
+						engine.eseguiAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
+						engine.inviaAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
+					}
 				}
 			}
 		}
@@ -160,6 +174,11 @@ public class Pannello extends JPanel{
 		proiettili_nemici.add(new Proiettile(x*GameEngine.P, 0, potenza*16*GameEngine.P, potenza*16*GameEngine.P, proiettileNemicoStyle, potenza));
 		proiettili_nemici.get(proiettili_nemici.size()-1).setVelY(2);
 	}
+	
+	//DEAD
+	public void dead(int i) {
+		giocatori.get(i).setStyle(vuoto);
+	}
 
 //---------- STILE DEI GIOCATORI ------------------------------//
 	
@@ -173,7 +192,7 @@ public class Pannello extends JPanel{
 	
 	public void setPlayer1Style(int i) {
 		System.out.println("id giocatore: "+GameEngine.id/2);
-		giocatori.get(GameEngine.id/2).setStyle(giocatore1Style[i]);
+		giocatori.get(GameEngine.id/2).setStyle(giocatoreStyle[i]);
 	}
 	
 }
