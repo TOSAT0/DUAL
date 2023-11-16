@@ -31,9 +31,6 @@ public class InputManager implements KeyListener{
 	public void eseguiAzione(Messaggio msg) {
 		if(msg.getAzione() != null)
 			engine.eseguiAzione(msg);
-		
-		if(msg.getAzione() != null) // <- TODO:ELIMINARE
-			System.out.println("Action: " + msg.getAzione());
 	}
 	
 	public void inviaAzione(Messaggio msg) {

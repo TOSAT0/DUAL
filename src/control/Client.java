@@ -47,7 +47,7 @@ public class Client implements Runnable{
 			Configurazione config = (Configurazione) input.readObject();
 			engine.setInizio(true);
 			GameEngine.id = config.getNum();
-			System.out.println("Server: OK"); // <-TODO: ELIMINARE
+			System.out.println("id: "+GameEngine.id);
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
 		Messaggio msg;

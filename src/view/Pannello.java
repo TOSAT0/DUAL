@@ -51,7 +51,8 @@ public class Pannello extends JPanel{
 	
 	public void inizializzaArrayGiocatori() {
 		for(int i=0; i < GameEngine.clients/2; i++)
-			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatore1Style[10]));
+			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatore1Style[i]));
+		this.setPlayer1Style(10);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -170,8 +171,9 @@ public class Pannello extends JPanel{
 		return style;
 	}
 	
-	public void setPlayer1Style(int id, int i) {
-		giocatori.get(id).setStyle(giocatore1Style[i]);
+	public void setPlayer1Style(int i) {
+		System.out.println("id giocatore: "+GameEngine.id/2);
+		giocatori.get(GameEngine.id/2).setStyle(giocatore1Style[i]);
 	}
 	
 }

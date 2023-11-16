@@ -64,7 +64,6 @@ public class Server {
 	
 	/*INVIA MESSAGGIO AD UN ALTRO THREAD*/
 	public void inviaMessagio(Messaggio msg) {
-		System.out.println("msg_server: "+msg.getAzione());
 		if(msg.getAzione() == Azione.BULLET) {
 			if(msg.getId() == 0) {
 				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);

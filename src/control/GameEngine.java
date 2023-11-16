@@ -67,7 +67,8 @@ public class GameEngine implements Runnable{
 //-------------------- METODI GENERICI ----------------------------------------//
 	
 	/*RICEVE L'AZIONE DELL'INPUT MANAGER/SERVER E LA ELABORA*/
-	public void eseguiAzione(Messaggio msg) { //id - 0: azione proveniente dall'input - 1: azione proveniente dal server
+	public void eseguiAzione(Messaggio msg) {
+		System.out.println("Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
 		if(msg.getAzione() == Azione.UP)
 			pannello.up(msg.getId()/2);
 		if(msg.getAzione() == Azione.DOWN)
@@ -100,8 +101,7 @@ public class GameEngine implements Runnable{
 	ActionListener ricarica = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 			proiettili++;
-			pannello.setPlayer1Style((int)id/2, proiettili);
-			System.out.println("+p: "+proiettili);
+			pannello.setPlayer1Style(proiettili);
 		}
 	};
 	
@@ -155,8 +155,7 @@ public class GameEngine implements Runnable{
 	
 	public void setProiettili(int p) {
 		this.proiettili = p;
-		pannello.setPlayer1Style((int)id/2, proiettili);
-		System.out.println("-p: "+p);
+		pannello.setPlayer1Style(proiettili);
 	}
 	public int getProiettili() {
 		return this.proiettili;
