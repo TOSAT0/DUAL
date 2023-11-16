@@ -22,6 +22,7 @@ import model.Giocatore;
 import model.Messaggio;
 import model.Oggetto;
 import model.Proiettile;
+import model.Stato;
 import model.Messaggio.Azione;
 
 public class Pannello extends JPanel{
@@ -115,6 +116,8 @@ public class Pannello extends JPanel{
 						g.setVita(g.getVita()-p.getPotenza());
 					}else {
 						g.setVita(0);
+						engine.clients--;
+						engine.stato = Stato.STOP;
 						engine.eseguiAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
 						engine.inviaAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
 					}

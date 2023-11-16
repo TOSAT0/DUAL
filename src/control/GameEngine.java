@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.ObjectInputFilter.Status;
 import java.time.chrono.MinguoEra;
 import java.util.ArrayList;
 import javax.swing.Timer;
@@ -15,12 +16,14 @@ import javax.swing.WindowConstants;
 
 import model.Messaggio;
 import model.Messaggio.Azione;
+import model.Stato;
 import view.CaricaImmagine;
 import view.Pannello;
 
 public class GameEngine implements Runnable{
 	public static double P = (Toolkit.getDefaultToolkit().getScreenSize().getHeight())/1080;
-	
+
+	public static Stato stato = Stato.WAIT;
 	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), id, clients = 0;
 	private int proiettili, x, y;
 	
@@ -30,7 +33,7 @@ public class GameEngine implements Runnable{
 	private Thread tclient;
 	private Timer timer;
 	
-	private boolean carica = false, inizio = false;
+	private boolean carica = false;
 	
 	public GameEngine() {
 		inputManager = new InputManager(this);
@@ -109,7 +112,7 @@ public class GameEngine implements Runnable{
 	
 	public void run() {
 		//fino a quanto non sono connessi tutti i client
-		while(!inizio) {
+		while(stato == Stato.WAIT) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) { e.printStackTrace(); }
@@ -146,6 +149,11 @@ public class GameEngine implements Runnable{
 				}
 			}
 			
+			if(clients == 0) {
+				client.inviaOggetto(new Messaggio(-1, -1, id, Azione.WIN));
+				stato = Stato.END;
+			}
+			
 			//attendo 50 millisecondi prima di ripetere l'operazione
 			try {
 				Thread.sleep(50);
@@ -161,13 +169,6 @@ public class GameEngine implements Runnable{
 	}
 	public int getProiettili() {
 		return this.proiettili;
-	}
-	
-	public void setInizio(boolean inizio) {
-		this.inizio = inizio;
-	}
-	public boolean getInizio() {
-		return this.inizio;
 	}
 	
 }

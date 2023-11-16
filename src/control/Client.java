@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import model.Configurazione;
 import model.Messaggio;
 import model.Oggetto;
+import model.Stato;
 import model.Messaggio.Azione;
 
 import java.io.ObjectOutputStream;
@@ -45,7 +46,7 @@ public class Client implements Runnable{
 		
 		try {
 			Configurazione config = (Configurazione) input.readObject();
-			engine.setInizio(true);
+			engine.stato = Stato.START;
 			GameEngine.id = config.getNum();
 			System.out.println("id: "+GameEngine.id);
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }

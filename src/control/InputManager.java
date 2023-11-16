@@ -7,6 +7,7 @@ import javax.swing.Timer;
 
 import model.Messaggio;
 import model.Messaggio.Azione;
+import model.Stato;
 
 public class InputManager implements KeyListener{
 	
@@ -29,12 +30,12 @@ public class InputManager implements KeyListener{
     };
 	
 	public void eseguiAzione(Messaggio msg) {
-		if(msg.getAzione() != null)
+		if(msg.getAzione() != null && engine.stato != Stato.STOP)
 			engine.eseguiAzione(msg);
 	}
 	
 	public void inviaAzione(Messaggio msg) {
-		if(msg.getAzione() != null)
+		if(msg.getAzione() != null && engine.stato != Stato.STOP)
 			engine.inviaAzione(msg);
 	}
 	
