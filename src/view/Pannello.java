@@ -58,8 +58,8 @@ public class Pannello extends JPanel{
 	public void inizializzaArrayGiocatori(int num) {
 		giocatori = new ArrayList<Giocatore>();
 		for(int i=0; i < num; i++)
-			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatoreStyle[i]));
-		this.setPlayer1Style(10);
+			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatoreStyle[0]));
+		//this.setPlayer1Style(10);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -116,6 +116,7 @@ public class Pannello extends JPanel{
         	proiettili.remove(p);
         	proiettili_nemici.remove(p);
         }
+        System.out.println("x: "+giocatori.get(GameEngine.id/2).getX()+" - y: "+giocatori.get(GameEngine.id/2).getY());
 	}
 	
 	public void controlloHitbox() {
@@ -208,6 +209,7 @@ public class Pannello extends JPanel{
 	}
 	
 	public void setPlayer1Style(int i) {
+		System.out.println("id: "+GameEngine.id+" - i: "+GameEngine.id/2);
 		giocatori.get(GameEngine.id/2).setStyle(giocatoreStyle[i]);
 	}
 	

@@ -158,7 +158,8 @@ public class GameEngine implements Runnable{
 	public void run() {
 		while(true) {
 			//ricarico la posizione degli oggetti dentro all'array
-			pannello.aggiornaPosizione();
+			if(stato != Stato.SCREEN && stato != Stato.WAIT)
+				pannello.aggiornaPosizione();
 			
 			//disegno degli oggetti presenti dentro all'array
 			pannello.repaint();
