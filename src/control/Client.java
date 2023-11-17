@@ -35,9 +35,7 @@ public class Client implements Runnable{
 			input = new ObjectInputStream(connessione.getInputStream());
 			
 			engine.stato = Stato.WAIT;
-		}catch(IOException e) {
-			System.out.println("ip sbagliato");
-		}
+		}catch(IOException e) { e.printStackTrace(); }
 	}
 	
 //-------------------- RUN --------------------------------------------------//

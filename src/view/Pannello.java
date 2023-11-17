@@ -71,7 +71,13 @@ public class Pannello extends JPanel{
         	g2D.drawImage(start_screen, 0, 0, engine.width, engine.height, null);
         	g2D.drawString("Enter IP and Port:"+engine.getTotIp(), 50, 100);
         	if(engine.stato == Stato.WAIT)
-        		g2D.drawString("Waiting for players ...", 50, 200);
+        		g2D.drawString("Waiting for players...", 50, 200);
+        }else if(engine.stato == Stato.WON){
+        	g2D.drawString("You WON", 50, 100);
+    		g2D.drawString("Press enter to play again...", 50, 200);
+        }else if(engine.stato == Stato.LOST) {
+        	g2D.drawString("You LOST", 50, 100);
+    		g2D.drawString("Press enter to play again...", 50, 200);
         }else {
             for(Giocatore og : giocatori) {
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
@@ -82,7 +88,7 @@ public class Pannello extends JPanel{
             for(Proiettile og : proiettili_nemici) {
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
             }
-                
+            
             g2D.drawString(String.valueOf(giocatori.get(GameEngine.id/2).getVita()*5)+"%", 25, 75);
         }
     }

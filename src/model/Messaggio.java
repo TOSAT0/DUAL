@@ -20,7 +20,7 @@ public class Messaggio implements Serializable{
 		SHOOT,
 		BULLET,
 		DEAD,
-		WIN
+		FINISH
 	}
 	
 	public Messaggio(int potenza, int x, int id, Azione azione) {

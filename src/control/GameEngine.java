@@ -99,6 +99,8 @@ public class GameEngine implements Runnable{
 			pannello.bullet(msg.getPotenza(), msg.getX());
 		if(msg.getAzione() == Azione.DEAD)
 			pannello.dead(msg.getId()/2);
+		if(msg.getAzione() == Azione.FINISH)
+			stato = Stato.WON;
 	}
 	
 	/*RICEVE L'AZIONE DALL'INPUT MANAGER/PANNELLO E LA INVIA AL CLIENT*/
@@ -109,29 +111,29 @@ public class GameEngine implements Runnable{
 	
 	/*GESTISCE L'INSERIMENTO DELL'IP DEL SERVER*/
 	public void gestioneIp(int key) {
-		if(key == 16)
+		if(key == KeyEvent.VK_COLON || key == 16)
 			addIp(':');
-		if(key == 96)
+		if(key == KeyEvent.VK_0  || key == 96)
 			addIp('0');
-		if(key == 97)
+		if(key == KeyEvent.VK_1 || key == 97)
 			addIp('1');
-		if(key == 98)
+		if(key == KeyEvent.VK_2 || key == 98)
 			addIp('2');
-		if(key == 99)
+		if(key == KeyEvent.VK_3 || key == 99)
 			addIp('3');
-		if(key == 100)
+		if(key == KeyEvent.VK_4 || key == 100)
 			addIp('4');
-		if(key == 101)
+		if(key == KeyEvent.VK_5 || key == 101)
 			addIp('5');
-		if(key == 102)
+		if(key == KeyEvent.VK_6 || key == 102)
 			addIp('6');
-		if(key == 103)
+		if(key == KeyEvent.VK_7 || key == 103)
 			addIp('7');
-		if(key == 104)
+		if(key == KeyEvent.VK_8 || key == 104)
 			addIp('8');
-		if(key == 105)
+		if(key == KeyEvent.VK_9 || key == 105)
 			addIp('9');
-		if(key == 110)
+		if(key == KeyEvent.VK_0 || key == 110)
 			addIp('.');
 		if(key == KeyEvent.VK_BACK_SPACE)
 			removeIp();
@@ -187,8 +189,8 @@ public class GameEngine implements Runnable{
 			}
 			
 			if(clients == 0) {
-				client.inviaOggetto(new Messaggio(-1, -1, id, Azione.WIN));
-				stato = Stato.END;
+				client.inviaOggetto(new Messaggio(-1, -1, id, Azione.FINISH));
+				stato = Stato.LOST;
 			}
 			
 			//attendo 50 millisecondi prima di ripetere l'operazione
@@ -220,7 +222,7 @@ public class GameEngine implements Runnable{
 	}
 	
 	public String getIp() {
-		while(ip.charAt(pos) != ':')
+		while(ip.charAt(pos) != ':' && pos < ip.length()-1)
 			pos++;
 		return ip.substring(0, pos);
 	}
