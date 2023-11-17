@@ -60,9 +60,14 @@ public class GameEngine implements Runnable{
 		
 		while(stato == Stato.SCREEN)
 			pannello.repaint();
+		System.out.println("stato: "+stato);
 		
 		tclient = new Thread(client);
 		tclient.start();
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) { e.printStackTrace(); }
 		
 		this.run();
 	}
@@ -131,13 +136,14 @@ public class GameEngine implements Runnable{
 		if(key == KeyEvent.VK_BACK_SPACE)
 			removeIp();
 		if(key == KeyEvent.VK_ENTER) {
-			client = new Client(this, this.getIp(), this.getPort());
+			if(stato == Stato.SCREEN)
+				client = new Client(this, this.getIp(), this.getPort());
 		}
 	}
 	
 	/*INIZIALIZZA L'ARRAY GIOCATORI*/
-	public void inizializzaArrayGiocatori(){
-		pannello.inizializzaArrayGiocatori();
+	public void inizializzaArrayGiocatori(int num){
+		pannello.inizializzaArrayGiocatori(num);
 	}
 	
 	/*INCREMENTA PROGRESSIVAMENTE IL NUMERO DI PROIETTILI*/

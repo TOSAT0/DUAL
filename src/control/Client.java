@@ -29,13 +29,12 @@ public class Client implements Runnable{
 		
 		try {
 			System.out.println("ip: "+ip+":"+port);
-			
 			connessione = new Socket(ip, port);
 			System.out.println("Connessione: "+connessione); // <-TODO: ELIMINARE
-			engine.stato = Stato.WAIT;
-			
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
+			
+			engine.stato = Stato.WAIT;
 		}catch(IOException e) {
 			System.out.println("ip sbagliato");
 		}
@@ -48,7 +47,7 @@ public class Client implements Runnable{
 		try {
 			Configurazione config = (Configurazione) input.readObject();
 			GameEngine.clients = config.getNum();
-			engine.inizializzaArrayGiocatori();
+			engine.inizializzaArrayGiocatori(config.getNum());
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
 		try {

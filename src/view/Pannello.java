@@ -42,8 +42,6 @@ public class Pannello extends JPanel{
 	private BufferedImage vuoto;
 	private BufferedImage start_screen;
 	
-	private int frame = 0;
-	
 	public Pannello(GameEngine engine, int height, int width) {
 		this.engine = engine;
 		
@@ -57,9 +55,9 @@ public class Pannello extends JPanel{
 
 //---------- METODI ------------------------------//
 	
-	public void inizializzaArrayGiocatori() {
+	public void inizializzaArrayGiocatori(int num) {
 		giocatori = new ArrayList<Giocatore>();
-		for(int i=0; i < GameEngine.clients/2; i++)
+		for(int i=0; i < num/2; i++)
 			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatoreStyle[i]));
 		this.setPlayer1Style(10);
 	}
@@ -72,18 +70,8 @@ public class Pannello extends JPanel{
         if(engine.stato == Stato.SCREEN || engine.stato == Stato.WAIT) {
         	g2D.drawImage(start_screen, 0, 0, engine.width, engine.height, null);
         	g2D.drawString("Enter IP and Port:"+engine.getTotIp(), 50, 100);
-        	if(engine.stato == Stato.WAIT) {
-        		if(frame == 0)
-        			g2D.drawString("Waiting for players .", 50, 200);
-        		if(frame == 1)
-        			g2D.drawString("Waiting for players .", 50, 200);
-        		if(frame == 2)
-        			g2D.drawString("Waiting for players ...", 50, 200);
-        		if(frame == 2)
-        			frame = 0;
-        		else
-        			frame++;
-        	}
+        	if(engine.stato == Stato.WAIT)
+        		g2D.drawString("Waiting for players ...", 50, 200);
         }else {
             for(Giocatore og : giocatori) {
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
@@ -94,7 +82,7 @@ public class Pannello extends JPanel{
             for(Proiettile og : proiettili_nemici) {
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
             }
-            
+                
             g2D.drawString(String.valueOf(giocatori.get(GameEngine.id/2).getVita()*5)+"%", 25, 75);
         }
     }
