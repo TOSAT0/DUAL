@@ -4,7 +4,7 @@ public enum Stato {
 	SCREEN,
 	WAIT,
 	PLAY,
-	STOP,
+	FINISH,
 	WON,
 	LOST,
 }

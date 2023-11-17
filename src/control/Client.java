@@ -43,8 +43,8 @@ public class Client implements Runnable{
 	public void run() {
 		try {
 			Configurazione config = (Configurazione) input.readObject();
-			GameEngine.clients = config.getNum();
-			engine.inizializzaArrayGiocatori(config.getNum());
+			GameEngine.clients = config.getNum()/2;
+			engine.inizializzaArrayGiocatori(config.getNum()/2);
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
 		try {
@@ -59,7 +59,6 @@ public class Client implements Runnable{
 			while(true) {
 				msg = (Messaggio) input.readObject();
 				engine.eseguiAzione(msg);
-				System.out.println("dio boia: "+msg.getAzione());
 			}
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}

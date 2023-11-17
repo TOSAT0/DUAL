@@ -60,9 +60,7 @@ public class GameEngine implements Runnable{
 		
 		while(stato == Stato.SCREEN)
 			pannello.repaint();
-		System.out.println("stato: "+stato);
 		
-		client = new Client(this, this.getIp(), this.getPort());
 		tclient = new Thread(client);
 		tclient.start();
 		
@@ -139,9 +137,8 @@ public class GameEngine implements Runnable{
 		if(key == KeyEvent.VK_BACK_SPACE)
 			removeIp();
 		if(key == KeyEvent.VK_ENTER) {
-			stato = Stato.WAIT;
-			/*if(stato == Stato.SCREEN)
-				client = new Client(this, this.getIp(), this.getPort());*/
+			if(stato == Stato.SCREEN)
+				client = new Client(this, this.getIp(), this.getPort());
 		}
 	}
 	
@@ -166,33 +163,37 @@ public class GameEngine implements Runnable{
 			//disegno degli oggetti presenti dentro all'array
 			pannello.repaint();
 			
-			//controllo le collisioni
-			pannello.controlloHitbox();
-			
-			//gestione della ricarica dei proiettili
-			if(proiettili < 10) {
-				if(inputManager.spazio()) {
+			if(stato == Stato.PLAY) {
+				//controllo le collisioni
+				pannello.controlloHitbox();
+				
+				//gestione della ricarica dei proiettili
+				if(proiettili < 10) {
+					if(inputManager.spazio()) {
+						if(carica) {
+							timer.stop();
+							carica = false;
+						}
+					}else {
+						if(!carica) {
+							timer = new Timer(500, ricarica);
+							timer.start();
+							carica = true;
+						}
+					}
+				}else {
 					if(carica) {
 						timer.stop();
 						carica = false;
 					}
-				}else {
-					if(!carica) {
-						timer = new Timer(500, ricarica);
-						timer.start();
-						carica = true;
-					}
-				}
-			}else {
-				if(carica) {
-					timer.stop();
-					carica = false;
 				}
 			}
 			
+			//controllo se sono morti tutti i giocatori
 			if(clients == 0) {
 				client.inviaOggetto(new Messaggio(-1, -1, id, Azione.FINISH));
 				stato = Stato.LOST;
+				System.out.println("Stato: "+stato);
 			}
 			
 			//attendo 50 millisecondi prima di ripetere l'operazione

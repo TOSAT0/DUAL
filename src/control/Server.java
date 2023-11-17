@@ -65,7 +65,7 @@ public class Server {
 	/*INVIA MESSAGGIO AD UN ALTRO THREAD*/
 	public void inviaMessagio(Messaggio msg) {
 		System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
-		if(msg.getAzione() == Azione.BULLET || msg.getAzione() == Azione.DEAD) {
+		if(msg.getAzione() == Azione.BULLET || msg.getAzione() == Azione.FINISH) {
 			if(msg.getId() == sq1) {
 				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}

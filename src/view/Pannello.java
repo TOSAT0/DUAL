@@ -57,7 +57,7 @@ public class Pannello extends JPanel{
 	
 	public void inizializzaArrayGiocatori(int num) {
 		giocatori = new ArrayList<Giocatore>();
-		for(int i=0; i < num/2; i++)
+		for(int i=0; i < num; i++)
 			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatoreStyle[i]));
 		this.setPlayer1Style(10);
 	}
@@ -130,7 +130,8 @@ public class Pannello extends JPanel{
 					}else {
 						g.setVita(0);
 						engine.clients--;
-						engine.stato = Stato.STOP;
+						System.out.println("clients: "+engine.clients);
+						engine.stato = Stato.FINISH;
 						engine.eseguiAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
 						engine.inviaAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
 					}
