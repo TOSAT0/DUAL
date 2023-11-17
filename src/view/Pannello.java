@@ -32,7 +32,7 @@ public class Pannello extends JPanel{
 	private CaricaImmagine immagine = new CaricaImmagine();
 	private CaricaFont font = new CaricaFont();
 	
-	private ArrayList<Giocatore> giocatori = new ArrayList<Giocatore>();
+	private ArrayList<Giocatore> giocatori;
 	private ArrayList<Proiettile> proiettili = new ArrayList<Proiettile>();
 	private ArrayList<Proiettile> proiettili_nemici = new ArrayList<Proiettile>();
 	
@@ -51,13 +51,12 @@ public class Pannello extends JPanel{
         proiettileNemicoStyle = immagine.immagine("proiettile-nemico");
         vuoto = immagine.immagine("vuoto");
         start_screen = immagine.immagine("start_screen");
-        
-        inizializzaArrayGiocatori();
 	}
 
 //---------- METODI ------------------------------//
 	
 	public void inizializzaArrayGiocatori() {
+		giocatori = new ArrayList<Giocatore>();
 		for(int i=0; i < GameEngine.clients/2; i++)
 			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatoreStyle[i]));
 		this.setPlayer1Style(10);
@@ -70,7 +69,7 @@ public class Pannello extends JPanel{
         
         if(engine.stato == Stato.SCREEN) {
         	g2D.drawImage(start_screen, 0, 0, engine.width, engine.height, null);
-        	g2D.drawString("Enter IP and Port:"+engine.getIP(), 100, 100);
+        	g2D.drawString("Enter IP and Port:"+engine.getTotIp(), 100, 100);
         }else {
             for(Giocatore og : giocatori) {
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);

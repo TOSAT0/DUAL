@@ -8,6 +8,7 @@ import model.Configurazione;
 import model.Messaggio;
 import model.Oggetto;
 import model.Stato;
+import view.Pannello;
 import model.Messaggio.Azione;
 
 import java.io.ObjectOutputStream;
@@ -23,16 +24,22 @@ public class Client implements Runnable{
 	private GameEngine engine;
 	
 	/*IL CLIENT SI CONNETTE AL SERVER*/
-	public Client(GameEngine engine, StringBuilder ip) {
+	public Client(GameEngine engine, String ip, int port) {
 		this.engine = engine;
 		
 		try {
-			connessione = new Socket(InetAddress.getLocalHost(), 10000);
+			System.out.println("ip giusto");
+			/*if(ip.equals("0.0.0.0"))
+				ip = InetAddress.getLocalHost();*/
+			connessione = new Socket(ip, port);
 			System.out.println("Connessione: "+connessione); // <-TODO: ELIMINARE
 			
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
-		}catch(IOException e) { e.printStackTrace(); }
+		}catch(IOException e) {
+			System.out.println("ip sbagliato");
+			engine.setTryIp(false);
+		}
 	}
 	
 //-------------------- RUN --------------------------------------------------//
@@ -42,6 +49,7 @@ public class Client implements Runnable{
 		try {
 			Configurazione config = (Configurazione) input.readObject();
 			GameEngine.clients = config.getNum();
+			engine.inizializzaArrayGiocatori();
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
 		try {

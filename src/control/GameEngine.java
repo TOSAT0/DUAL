@@ -26,7 +26,6 @@ public class GameEngine implements Runnable{
 
 	public static Stato stato = Stato.SCREEN;
 	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), id, clients = 0;
-	private int proiettili, x, y, ip_i = 0;
 	
 	private InputManager inputManager;
 	private Pannello pannello;
@@ -34,19 +33,12 @@ public class GameEngine implements Runnable{
 	private Thread tclient;
 	private Timer timer;
 	
-	private boolean carica = false;
+	private int proiettili, x, y, pos = 0;
+	private boolean carica = false, tryIp = false;
 	private StringBuilder ip = new StringBuilder("");
 	
 	public GameEngine() {
 		inputManager = new InputManager(this);
-		client = new Client(this, ip);
-		tclient = new Thread(client);
-		tclient.start();
-		while(clients == 0) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) { e.printStackTrace(); }
-		}
 		pannello = new Pannello(this, height, width);
 		
 		proiettili = 10;
@@ -66,6 +58,8 @@ public class GameEngine implements Runnable{
 		frame.setLocation(x, y);
 		frame.addKeyListener(inputManager);
 		
+		while(stato == Stato.SCREEN)
+			pannello.repaint();
 		this.run();
 	}
 	
@@ -106,41 +100,42 @@ public class GameEngine implements Runnable{
 	
 	/*GESTISCE L'INSERIMENTO DELL'IP DEL SERVER*/
 	public void gestioneIp(int key) {
-		if(key == 97) {
-			addIp('1');
-		}
-		if(key == 98) {
-			addIp('2');		
-		}
-		if(key == 99) {
-			addIp('3');
-		}
-		if(key == 100) {
-			addIp('4');
-		}
-		if(key == 101) {
-			addIp('5');
-		}
-		if(key == 102) {
-			addIp('6');
-		}
-		if(key == 103) {
-			addIp('7');
-		}
-		if(key == 104) {
-			addIp('8');
-		}
-		if(key == 105) {
-			addIp('9');
-		}
-		if(key == 96) {
+		if(key == 16)
+			addIp(':');
+		if(key == 96)
 			addIp('0');
-		}
-		if(key == KeyEvent.VK_BACK_SPACE) {
+		if(key == 97)
+			addIp('1');
+		if(key == 98)
+			addIp('2');
+		if(key == 99)
+			addIp('3');
+		if(key == 100)
+			addIp('4');
+		if(key == 101)
+			addIp('5');
+		if(key == 102)
+			addIp('6');
+		if(key == 103)
+			addIp('7');
+		if(key == 104)
+			addIp('8');
+		if(key == 105)
+			addIp('9');
+		if(key == 110)
+			addIp('.');
+		if(key == KeyEvent.VK_BACK_SPACE)
 			removeIp();
-		}
 		if(key == KeyEvent.VK_ENTER) {
+			client = new Client(this, this.getIp(), this.getPort());
+			tclient = new Thread(client);
+			tclient.start();
 		}
+	}
+	
+	/*INIZIALIZZA L'ARRAY GIOCATORI*/
+	public void inizializzaArrayGiocatori(){
+		pannello.inizializzaArrayGiocatori();
 	}
 	
 	/*INCREMENTA PROGRESSIVAMENTE IL NUMERO DI PROIETTILI*/
@@ -152,13 +147,6 @@ public class GameEngine implements Runnable{
 	};
 	
 	public void run() {
-		//fino a quanto non sono connessi tutti i client
-		while(stato == Stato.WAIT) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) { e.printStackTrace(); }
-		}
-		
 		while(true) {
 			//ricarico la posizione degli oggetti dentro all'array
 			pannello.aggiornaPosizione();
@@ -212,16 +200,28 @@ public class GameEngine implements Runnable{
 		return this.proiettili;
 	}
 	
-	public StringBuilder getIP() {
+	public StringBuilder getTotIp() {
 		return this.ip;
 	}
 	public void addIp(Character c) {
 		 ip.append(c);
-		 ip_i++;
 	}
 	public void removeIp() {
-		ip_i--;
-		ip.deleteCharAt(ip_i);
+		if(ip.length() != 0)
+			ip.deleteCharAt(ip.length()-1);
+	}
+	
+	public String getIp() {
+		while(ip.charAt(pos) != ':')
+			pos++;
+		return ip.substring(0, pos-1);
+	}
+	public int getPort() {
+		return Integer.parseInt(ip.substring(pos+1, ip.length()-1));
+	}
+	
+	public void setTryIp(boolean tryIp) {
+		this.tryIp = tryIp;
 	}
 	
 }
