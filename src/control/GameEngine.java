@@ -34,7 +34,7 @@ public class GameEngine implements Runnable{
 	private Timer timer;
 	
 	private int proiettili, x, y, pos = 0;
-	private boolean carica = false, tryIp = false;
+	private boolean carica = false;
 	private StringBuilder ip = new StringBuilder("");
 	
 	public GameEngine() {
@@ -60,6 +60,10 @@ public class GameEngine implements Runnable{
 		
 		while(stato == Stato.SCREEN)
 			pannello.repaint();
+		
+		tclient = new Thread(client);
+		tclient.start();
+		
 		this.run();
 	}
 	
@@ -128,8 +132,6 @@ public class GameEngine implements Runnable{
 			removeIp();
 		if(key == KeyEvent.VK_ENTER) {
 			client = new Client(this, this.getIp(), this.getPort());
-			tclient = new Thread(client);
-			tclient.start();
 		}
 	}
 	
@@ -214,14 +216,10 @@ public class GameEngine implements Runnable{
 	public String getIp() {
 		while(ip.charAt(pos) != ':')
 			pos++;
-		return ip.substring(0, pos-1);
+		return ip.substring(0, pos);
 	}
 	public int getPort() {
-		return Integer.parseInt(ip.substring(pos+1, ip.length()-1));
-	}
-	
-	public void setTryIp(boolean tryIp) {
-		this.tryIp = tryIp;
+		return Integer.parseInt(ip.substring(pos+1, ip.length()));
 	}
 	
 }

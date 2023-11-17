@@ -28,17 +28,16 @@ public class Client implements Runnable{
 		this.engine = engine;
 		
 		try {
-			System.out.println("ip giusto");
-			/*if(ip.equals("0.0.0.0"))
-				ip = InetAddress.getLocalHost();*/
+			System.out.println("ip: "+ip+":"+port);
+			
 			connessione = new Socket(ip, port);
 			System.out.println("Connessione: "+connessione); // <-TODO: ELIMINARE
+			engine.stato = Stato.WAIT;
 			
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
 		}catch(IOException e) {
 			System.out.println("ip sbagliato");
-			engine.setTryIp(false);
 		}
 	}
 	

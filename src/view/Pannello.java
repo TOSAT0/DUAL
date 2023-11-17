@@ -42,6 +42,8 @@ public class Pannello extends JPanel{
 	private BufferedImage vuoto;
 	private BufferedImage start_screen;
 	
+	private int frame = 0;
+	
 	public Pannello(GameEngine engine, int height, int width) {
 		this.engine = engine;
 		
@@ -67,9 +69,21 @@ public class Pannello extends JPanel{
         Graphics2D g2D = (Graphics2D) g.create();
         g2D.setFont(font.getFont(75));
         
-        if(engine.stato == Stato.SCREEN) {
+        if(engine.stato == Stato.SCREEN || engine.stato == Stato.WAIT) {
         	g2D.drawImage(start_screen, 0, 0, engine.width, engine.height, null);
-        	g2D.drawString("Enter IP and Port:"+engine.getTotIp(), 100, 100);
+        	g2D.drawString("Enter IP and Port:"+engine.getTotIp(), 50, 100);
+        	if(engine.stato == Stato.WAIT) {
+        		if(frame == 0)
+        			g2D.drawString("Waiting for players .", 50, 200);
+        		if(frame == 1)
+        			g2D.drawString("Waiting for players .", 50, 200);
+        		if(frame == 2)
+        			g2D.drawString("Waiting for players ...", 50, 200);
+        		if(frame == 2)
+        			frame = 0;
+        		else
+        			frame++;
+        	}
         }else {
             for(Giocatore og : giocatori) {
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
