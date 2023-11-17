@@ -124,8 +124,14 @@ public class InputManager implements KeyListener{
 			azione = Azione.NRIGHT;
 		}
 		
-		eseguiAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
-		inviaAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
+		if(engine.stato == Stato.SCREEN) {
+			engine.gestioneIp(key);
+		}
+		
+		if(engine.stato != Stato.SCREEN && engine.stato != Stato.WAIT) {
+			eseguiAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
+			inviaAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
+		}
 	}
 	
 }

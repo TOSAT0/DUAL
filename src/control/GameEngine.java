@@ -5,6 +5,7 @@ import java.awt.Panel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ObjectInputFilter.Status;
 import java.time.chrono.MinguoEra;
@@ -23,9 +24,9 @@ import view.Pannello;
 public class GameEngine implements Runnable{
 	public static double P = (Toolkit.getDefaultToolkit().getScreenSize().getHeight())/1080;
 
-	public static Stato stato = Stato.WAIT;
+	public static Stato stato = Stato.SCREEN;
 	public static int height = (int)(1080*0.8*P), width = (int)(1920*0.8*P), id, clients = 0;
-	private int proiettili, x, y;
+	private int proiettili, x, y, ip_i = 0;
 	
 	private InputManager inputManager;
 	private Pannello pannello;
@@ -34,10 +35,11 @@ public class GameEngine implements Runnable{
 	private Timer timer;
 	
 	private boolean carica = false;
+	private StringBuilder ip = new StringBuilder("");
 	
 	public GameEngine() {
 		inputManager = new InputManager(this);
-		client = new Client(this);
+		client = new Client(this, ip);
 		tclient = new Thread(client);
 		tclient.start();
 		while(clients == 0) {
@@ -100,6 +102,45 @@ public class GameEngine implements Runnable{
 	public void inviaAzione(Messaggio msg) {
 		if(GameEngine.clients > 2 || msg.getAzione() == Azione.BULLET)
 			client.inviaOggetto(msg);
+	}
+	
+	/*GESTISCE L'INSERIMENTO DELL'IP DEL SERVER*/
+	public void gestioneIp(int key) {
+		if(key == 97) {
+			addIp('1');
+		}
+		if(key == 98) {
+			addIp('2');		
+		}
+		if(key == 99) {
+			addIp('3');
+		}
+		if(key == 100) {
+			addIp('4');
+		}
+		if(key == 101) {
+			addIp('5');
+		}
+		if(key == 102) {
+			addIp('6');
+		}
+		if(key == 103) {
+			addIp('7');
+		}
+		if(key == 104) {
+			addIp('8');
+		}
+		if(key == 105) {
+			addIp('9');
+		}
+		if(key == 96) {
+			addIp('0');
+		}
+		if(key == KeyEvent.VK_BACK_SPACE) {
+			removeIp();
+		}
+		if(key == KeyEvent.VK_ENTER) {
+		}
 	}
 	
 	/*INCREMENTA PROGRESSIVAMENTE IL NUMERO DI PROIETTILI*/
@@ -169,6 +210,18 @@ public class GameEngine implements Runnable{
 	}
 	public int getProiettili() {
 		return this.proiettili;
+	}
+	
+	public StringBuilder getIP() {
+		return this.ip;
+	}
+	public void addIp(Character c) {
+		 ip.append(c);
+		 ip_i++;
+	}
+	public void removeIp() {
+		ip_i--;
+		ip.deleteCharAt(ip_i);
 	}
 	
 }

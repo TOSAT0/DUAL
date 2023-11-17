@@ -40,6 +40,7 @@ public class Pannello extends JPanel{
 	private BufferedImage proiettileSquadraStyle;
 	private BufferedImage proiettileNemicoStyle;
 	private BufferedImage vuoto;
+	private BufferedImage start_screen;
 	
 	public Pannello(GameEngine engine, int height, int width) {
 		this.engine = engine;
@@ -49,6 +50,7 @@ public class Pannello extends JPanel{
         proiettileSquadraStyle = immagine.immagine("proiettile-squadra");
         proiettileNemicoStyle = immagine.immagine("proiettile-nemico");
         vuoto = immagine.immagine("vuoto");
+        start_screen = immagine.immagine("start_screen");
         
         inizializzaArrayGiocatori();
 	}
@@ -64,19 +66,24 @@ public class Pannello extends JPanel{
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g.create();
-        
-        for(Giocatore og : giocatori) {
-            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
-        }
-        for(Proiettile og : proiettili) {
-            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
-        }
-        for(Proiettile og : proiettili_nemici) {
-            g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
-        }
-        
         g2D.setFont(font.getFont(75));
-        g2D.drawString(String.valueOf(giocatori.get(GameEngine.id/2).getVita()*5)+"%", 25, 75);
+        
+        if(engine.stato == Stato.SCREEN) {
+        	g2D.drawImage(start_screen, 0, 0, engine.width, engine.height, null);
+        	g2D.drawString("Enter IP and Port:"+engine.getIP(), 100, 100);
+        }else {
+            for(Giocatore og : giocatori) {
+                g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
+            }
+            for(Proiettile og : proiettili) {
+                g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
+            }
+            for(Proiettile og : proiettili_nemici) {
+                g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
+            }
+            
+            g2D.drawString(String.valueOf(giocatori.get(GameEngine.id/2).getVita()*5)+"%", 25, 75);
+        }
     }
 	
 	public void aggiornaPosizione() {
