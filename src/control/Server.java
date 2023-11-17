@@ -17,7 +17,7 @@ public class Server {
 	private Socket connessione;
 	private Scanner in = new Scanner(System.in);
 	
-	private int numClient;
+	private int numClient, sq1 = 0, sq2 = 1;
 	private boolean inizio = false;
 	
 	private ArrayList<Connessione> clients = new ArrayList<Connessione>();
@@ -64,18 +64,25 @@ public class Server {
 	
 	/*INVIA MESSAGGIO AD UN ALTRO THREAD*/
 	public void inviaMessagio(Messaggio msg) {
-		if(msg.getAzione() == Azione.BULLET) {
-			if(msg.getId() == 0) {
+		System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
+		if(msg.getAzione() == Azione.BULLET || msg.getAzione() == Azione.DEAD) {
+			if(msg.getId() == sq1) {
 				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}
-			if(msg.getId() == 1) {
+			if(msg.getId() == sq2) {
 				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}
 		}else {
 			if(msg.getId()%2 == 0) {
-				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
+				for(int i=0; i<clients.size(); i+=2) {
+					if(msg.getId() != i)
+						clients.get(i).inviaOggetto(msg);
+				}
 			}else {
-				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
+				for(int i=1; i<clients.size(); i+=2) {
+					if(msg.getId() != i)
+						clients.get(i).inviaOggetto(msg);
+				}
 			}
 		}
 	}

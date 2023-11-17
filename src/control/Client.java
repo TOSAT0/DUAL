@@ -30,7 +30,6 @@ public class Client implements Runnable{
 		try {
 			System.out.println("ip: "+ip+":"+port);
 			connessione = new Socket(ip, port);
-			System.out.println("Connessione: "+connessione); // <-TODO: ELIMINARE
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
 			
@@ -50,7 +49,7 @@ public class Client implements Runnable{
 		
 		try {
 			Configurazione config = (Configurazione) input.readObject();
-			engine.stato = Stato.START;
+			engine.stato = Stato.PLAY;
 			GameEngine.id = config.getNum();
 			System.out.println("id: "+GameEngine.id);
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
@@ -60,6 +59,7 @@ public class Client implements Runnable{
 			while(true) {
 				msg = (Messaggio) input.readObject();
 				engine.eseguiAzione(msg);
+				System.out.println("dio boia: "+msg.getAzione());
 			}
 		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 	}

@@ -62,6 +62,7 @@ public class GameEngine implements Runnable{
 			pannello.repaint();
 		System.out.println("stato: "+stato);
 		
+		client = new Client(this, this.getIp(), this.getPort());
 		tclient = new Thread(client);
 		tclient.start();
 		
@@ -105,7 +106,7 @@ public class GameEngine implements Runnable{
 	
 	/*RICEVE L'AZIONE DALL'INPUT MANAGER/PANNELLO E LA INVIA AL CLIENT*/
 	public void inviaAzione(Messaggio msg) {
-		if(GameEngine.clients > 2 || msg.getAzione() == Azione.BULLET)
+		if(stato == Stato.PLAY || msg.getAzione() == Azione.DEAD || msg.getAzione() == Azione.FINISH)
 			client.inviaOggetto(msg);
 	}
 	
@@ -138,8 +139,9 @@ public class GameEngine implements Runnable{
 		if(key == KeyEvent.VK_BACK_SPACE)
 			removeIp();
 		if(key == KeyEvent.VK_ENTER) {
-			if(stato == Stato.SCREEN)
-				client = new Client(this, this.getIp(), this.getPort());
+			stato = Stato.WAIT;
+			/*if(stato == Stato.SCREEN)
+				client = new Client(this, this.getIp(), this.getPort());*/
 		}
 	}
 	

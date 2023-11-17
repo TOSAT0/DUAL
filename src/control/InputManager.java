@@ -30,12 +30,13 @@ public class InputManager implements KeyListener{
     };
 	
 	public void eseguiAzione(Messaggio msg) {
-		if(msg.getAzione() != null && engine.stato != Stato.STOP)
+		System.out.println("pressione2");
+		if(msg.getAzione() != null)
 			engine.eseguiAzione(msg);
 	}
 	
 	public void inviaAzione(Messaggio msg) {
-		if(msg.getAzione() != null && engine.stato != Stato.STOP)
+		if(msg.getAzione() != null)
 			engine.inviaAzione(msg);
 	}
 	
@@ -50,6 +51,7 @@ public class InputManager implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) { //pressione tasto
+		System.out.println("pressione1");
 		int key = e.getKeyCode();
 		Azione azione = null;
 		
@@ -90,12 +92,14 @@ public class InputManager implements KeyListener{
 			}
 		}
 		
-		eseguiAzione(new Messaggio(-1, -1, GameEngine.id, azione));
-		inviaAzione(new Messaggio(-1, -1, GameEngine.id, azione));
+		if(engine.stato == Stato.PLAY) {
+			eseguiAzione(new Messaggio(-1, -1, GameEngine.id, azione));
+			inviaAzione(new Messaggio(-1, -1, GameEngine.id, azione));
+		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) { //rilascio tasto
+	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		Azione azione = null;
 		
@@ -127,7 +131,7 @@ public class InputManager implements KeyListener{
 		if(engine.stato == Stato.SCREEN)
 			engine.gestioneIp(key);
 		
-		if(engine.stato != Stato.SCREEN && engine.stato != Stato.WAIT) {
+		if(engine.stato == Stato.PLAY) {
 			eseguiAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
 			inviaAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
 		}

@@ -3,7 +3,7 @@ package model;
 public enum Stato {
 	SCREEN,
 	WAIT,
-	START,
+	PLAY,
 	STOP,
 	WON,
 	LOST,

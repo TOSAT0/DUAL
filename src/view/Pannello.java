@@ -103,8 +103,7 @@ public class Pannello extends JPanel{
             controllo = p.aggiornaPosizione();
             if(controllo) {
         		elimina.add(p);
-        		if(GameEngine.id == 0 || GameEngine.id == 1)
-        			engine.inviaAzione(new Messaggio(p.getPotenza(), (int) p.getX(), GameEngine.id, Azione.BULLET));
+    			engine.inviaAzione(new Messaggio(p.getPotenza(), (int) p.getX(), GameEngine.id, Azione.BULLET));
         	}
         }
         for(Proiettile p : proiettili_nemici) {
@@ -208,7 +207,6 @@ public class Pannello extends JPanel{
 	}
 	
 	public void setPlayer1Style(int i) {
-		System.out.println("id giocatore: "+GameEngine.id/2);
 		giocatori.get(GameEngine.id/2).setStyle(giocatoreStyle[i]);
 	}
 	
