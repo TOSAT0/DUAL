@@ -143,7 +143,6 @@ public class Pannello extends JPanel{
         	proiettili.remove(p);
         	proiettili_nemici.remove(p);
         }
-        //System.out.println("["+engine.id+" - "+engine.id/2+"]x: "+giocatori.get(GameEngine.id/2).getX()+" - y: "+giocatori.get(GameEngine.id/2).getY());
 	}
 	
 	public void controlloHitbox() {
@@ -153,14 +152,16 @@ public class Pannello extends JPanel{
 				if(p.getHitbox().intersects(g.getHitbox())) {
 					if(g.isVivo())
 						elimina.add(p);
-					if(g.getVita() - p.getPotenza() > 0) {
-						g.setVita(g.getVita()-p.getPotenza());
-					}else {
-						g.setVita(0);
-						engine.clients--;
-						engine.stato = Stato.DEAD;
-						engine.eseguiAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
-						engine.inviaAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
+					if(/*G DEVE ESSERE IL GIOCATORE EFFETTIVO, NON UNO A CASO*/) {
+						if(g.getVita() - p.getPotenza() > 0) {
+							g.setVita(g.getVita()-p.getPotenza());
+						}else {
+							g.setVita(0);
+							engine.clients--;
+							engine.stato = Stato.DEAD;
+							engine.eseguiAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
+							engine.inviaAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
+						}
 					}
 				}
 			}
