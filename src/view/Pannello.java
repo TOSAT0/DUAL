@@ -55,11 +55,11 @@ public class Pannello extends JPanel{
 
 //---------- METODI ------------------------------//
 	
-	public void inizializzaArrayGiocatori(int num) {
+	public void inizializzaArrayGiocatori() {
 		giocatori = new ArrayList<Giocatore>();
-		for(int i=0; i < num; i++)
+		for(int i=0; i < engine.clients; i++)
 			giocatori.add(new Giocatore(GameEngine.width/2, GameEngine.height/2, 15*15*GameEngine.P, 11*15*GameEngine.P, giocatoreStyle[0]));
-		//this.setPlayer1Style(10);
+		this.setPlayerStyle(10);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -116,7 +116,7 @@ public class Pannello extends JPanel{
         	proiettili.remove(p);
         	proiettili_nemici.remove(p);
         }
-        System.out.println("x: "+giocatori.get(GameEngine.id/2).getX()+" - y: "+giocatori.get(GameEngine.id/2).getY());
+        //System.out.println("["+engine.id+" - "+engine.id/2+"]x: "+giocatori.get(GameEngine.id/2).getX()+" - y: "+giocatori.get(GameEngine.id/2).getY());
 	}
 	
 	public void controlloHitbox() {
@@ -208,8 +208,7 @@ public class Pannello extends JPanel{
 		return style;
 	}
 	
-	public void setPlayer1Style(int i) {
-		System.out.println("id: "+GameEngine.id+" - i: "+GameEngine.id/2);
+	public void setPlayerStyle(int i) {
 		giocatori.get(GameEngine.id/2).setStyle(giocatoreStyle[i]);
 	}
 	

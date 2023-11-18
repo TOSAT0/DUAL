@@ -139,19 +139,21 @@ public class GameEngine implements Runnable{
 		if(key == KeyEvent.VK_ENTER) {
 			if(stato == Stato.SCREEN)
 				client = new Client(this, this.getIp(), this.getPort());
+			if(stato == Stato.FINISH)
+				System.out.println("akfnl");
 		}
 	}
 	
 	/*INIZIALIZZA L'ARRAY GIOCATORI*/
-	public void inizializzaArrayGiocatori(int num){
-		pannello.inizializzaArrayGiocatori(num);
+	public void inizializzaArrayGiocatori(){
+		pannello.inizializzaArrayGiocatori();
 	}
 	
 	/*INCREMENTA PROGRESSIVAMENTE IL NUMERO DI PROIETTILI*/
 	ActionListener ricarica = new ActionListener() {
 		public void actionPerformed(ActionEvent evt) {
 			proiettili++;
-			pannello.setPlayer1Style(proiettili);
+			pannello.setPlayerStyle(proiettili);
 		}
 	};
 	
@@ -208,7 +210,7 @@ public class GameEngine implements Runnable{
 	
 	public void setProiettili(int p) {
 		this.proiettili = p;
-		pannello.setPlayer1Style(proiettili);
+		pannello.setPlayerStyle(proiettili);
 	}
 	public int getProiettili() {
 		return this.proiettili;

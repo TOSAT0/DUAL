@@ -47,15 +47,16 @@ public class Client implements Runnable{
 		try {
 			Configurazione config = (Configurazione) input.readObject();
 			GameEngine.clients = config.getNum()/2;
-			engine.inizializzaArrayGiocatori(config.getNum()/2);
 		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
 		
 		try {
 			Configurazione config = (Configurazione) input.readObject();
-			engine.stato = Stato.PLAY;
 			GameEngine.id = config.getNum();
+			engine.inizializzaArrayGiocatori();
+			Thread.sleep(1000);
+			engine.stato = Stato.PLAY;
 			System.out.println("id: "+GameEngine.id);
-		} catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
+		} catch (ClassNotFoundException | IOException | InterruptedException e) { e.printStackTrace(); }
 		
 		Messaggio msg;
 		try {
