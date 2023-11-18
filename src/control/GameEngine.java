@@ -29,7 +29,7 @@ public class GameEngine implements Runnable{
 	private InputManager inputManager;
 	private Pannello pannello;
 	private Client client;
-	private Thread tclient;
+	private Thread tclient = null;
 	private Timer timer;
 	
 	private int proiettili, x, y, pos = 0;
@@ -56,16 +56,6 @@ public class GameEngine implements Runnable{
 		frame.pack();
 		frame.setLocation(x, y);
 		frame.addKeyListener(inputManager);
-		
-		while(stato == Stato.SCREEN)
-			pannello.repaint();
-		
-		tclient = new Thread(client);
-		tclient.start();
-		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) { e.printStackTrace(); }
 		
 		this.run();
 	}
@@ -159,11 +149,23 @@ public class GameEngine implements Runnable{
 	public void run() {
 		while(true) {
 			//ricarico la posizione degli oggetti dentro all'array
-			if(stato != Stato.SCREEN && stato != Stato.WAIT)
+			if(stato != Stato.SCREEN && stato != Stato.WAIT) {
 				pannello.aggiornaPosizione();
+				
+				//controllo se sono morti tutti i giocatori
+				if(clients == 0) {
+					client.inviaOggetto(new Messaggio(-1, -1, id, Azione.FINISH));
+					stato = Stato.LOST;
+				}
+			}
 			
 			//disegno degli oggetti presenti dentro all'array
 			pannello.repaint();
+			
+			if(stato == Stato.WAIT && tclient == null) {
+				tclient = new Thread(client);
+				tclient.start();
+			}
 			
 			if(stato == Stato.PLAY) {
 				//controllo le collisioni
@@ -189,13 +191,6 @@ public class GameEngine implements Runnable{
 						carica = false;
 					}
 				}
-			}
-			
-			//controllo se sono morti tutti i giocatori
-			if(clients == 0) {
-				client.inviaOggetto(new Messaggio(-1, -1, id, Azione.FINISH));
-				stato = Stato.LOST;
-				System.out.println("Stato: "+stato);
 			}
 			
 			//attendo 50 millisecondi prima di ripetere l'operazione

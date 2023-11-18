@@ -14,10 +14,10 @@ public class Main {
 		
 		Scanner in = new Scanner(System.in);
 		
-		/*System.out.print("?");
+		System.out.print("?");
 		if(in.nextInt() == 0)
 			new Server();
-		else*/
+		else
 			new GameEngine();
 	}
 	

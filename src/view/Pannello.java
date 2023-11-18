@@ -42,6 +42,8 @@ public class Pannello extends JPanel{
 	private BufferedImage vuoto;
 	private BufferedImage start_screen;
 	
+	private int frame = 0;
+	
 	public Pannello(GameEngine engine, int height, int width) {
 		this.engine = engine;
 		
@@ -70,15 +72,40 @@ public class Pannello extends JPanel{
         if(engine.stato == Stato.SCREEN || engine.stato == Stato.WAIT) {
         	g2D.drawImage(start_screen, 0, 0, engine.width, engine.height, null);
         	g2D.drawString("Enter IP and Port:"+engine.getTotIp(), 50, 100);
-        	if(engine.stato == Stato.WAIT)
-        		g2D.drawString("Waiting for players...", 50, 200);
-        }else if(engine.stato == Stato.WON){
+        	if(engine.stato == Stato.WAIT) {
+        		if(frame >= 0 && frame < 10)
+        			g2D.drawString("Waiting for players", 50, 200);
+        		if(frame >= 10 && frame < 20)
+        			g2D.drawString("Waiting for players.", 50, 200);
+        		if(frame >= 20 && frame < 30)
+        			g2D.drawString("Waiting for players..", 50, 200);
+        		if(frame >= 30 && frame < 40)
+        			g2D.drawString("Waiting for players...", 50, 200);
+        		if(frame >= 40)
+        			frame = 0;
+        		frame++;
+        	}
+        }
+        if(engine.stato == Stato.WON){
         	g2D.drawString("You WON", 50, 100);
-    		g2D.drawString("Press enter to play again...", 50, 200);
-        }else if(engine.stato == Stato.LOST) {
+        }
+        if(engine.stato == Stato.LOST) {
         	g2D.drawString("You LOST", 50, 100);
-    		g2D.drawString("Press enter to play again...", 50, 200);
-        }else {
+        }
+        if(engine.stato == Stato.WON || engine.stato == Stato.LOST) {
+        	if(frame >= 0 && frame < 10)
+        		g2D.drawString("Press enter to play again", 50, 200);
+        	if(frame >= 10 && frame < 20)
+        		g2D.drawString("Press enter to play again.", 50, 200);
+        	if(frame >= 20 && frame < 30)
+        		g2D.drawString("Press enter to play again..", 50, 200);
+        	if(frame >= 30 && frame < 40)
+        		g2D.drawString("Press enter to play again...", 50, 200);
+        	if(frame >= 40)
+        		frame = 0;
+        	frame++;
+        }
+        if(engine.stato == Stato.PLAY || engine.stato == Stato.FINISH){
             for(Giocatore og : giocatori) {
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
             }
