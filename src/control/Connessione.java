@@ -16,8 +16,12 @@ public class Connessione implements Runnable{
 	
 	private Server server;
 	
-	public Connessione(Server server, Socket connessione) {
+	private int id;
+	private boolean vivo = true;
+	
+	public Connessione(Server server, Socket connessione, int id) {
 		this.server = server;
+		this.id = id;
 		
 		try {
 			this.connessione = connessione;
@@ -36,7 +40,9 @@ public class Connessione implements Runnable{
 				msg = (Messaggio) input.readObject();
 				server.inviaMessagio(msg);
 			}
-		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
+		} catch (IOException | ClassNotFoundException e) {
+			server.clientDisconnesso(id);
+		}
 	}
 
 //-------------------- ALTRI METODI ------------------------------//
@@ -47,4 +53,11 @@ public class Connessione implements Runnable{
 			output.writeObject(o);
 		} catch (IOException e) { e.printStackTrace(); }
 	}
+	
+//-------------------- GETTER E SETTER ------------------------------//
+	
+	public Socket getConnessione() {
+		return this.connessione;
+	}
+	
 }

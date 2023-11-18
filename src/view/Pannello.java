@@ -105,7 +105,7 @@ public class Pannello extends JPanel{
         		frame = 0;
         	frame++;
         }
-        if(engine.stato == Stato.PLAY || engine.stato == Stato.FINISH){
+        if(engine.stato == Stato.PLAY || engine.stato == Stato.DEAD){
             for(Giocatore og : giocatori) {
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
             }
@@ -158,8 +158,7 @@ public class Pannello extends JPanel{
 					}else {
 						g.setVita(0);
 						engine.clients--;
-						System.out.println("clients: "+engine.clients);
-						engine.stato = Stato.FINISH;
+						engine.stato = Stato.DEAD;
 						engine.eseguiAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
 						engine.inviaAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
 					}

@@ -93,6 +93,8 @@ public class InputManager implements KeyListener{
 		
 			eseguiAzione(new Messaggio(-1, -1, GameEngine.id, azione));
 			inviaAzione(new Messaggio(-1, -1, GameEngine.id, azione));
+		}else {
+			engine.gestioneIp(key);
 		}
 	}
 
@@ -127,8 +129,6 @@ public class InputManager implements KeyListener{
 			
 			eseguiAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
 			inviaAzione(new Messaggio(potenza, -1, GameEngine.id, azione));
-		}else {
-			engine.gestioneIp(key);
 		}
 	}
 	

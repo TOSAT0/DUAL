@@ -32,7 +32,7 @@ public class GameEngine implements Runnable{
 	private Thread tclient = null;
 	private Timer timer;
 	
-	private int proiettili, x, y, pos = 0;
+	private int proiettili, x, y, pos = 0, k = -1;
 	private boolean carica = false;
 	private StringBuilder ip = new StringBuilder("");
 	
@@ -99,37 +99,41 @@ public class GameEngine implements Runnable{
 	
 	/*GESTISCE L'INSERIMENTO DELL'IP DEL SERVER*/
 	public void gestioneIp(int key) {
-		if(key == KeyEvent.VK_COLON || key == 16)
-			addIp(':');
-		if(key == KeyEvent.VK_0  || key == 96)
-			addIp('0');
-		if(key == KeyEvent.VK_1 || key == 97)
-			addIp('1');
-		if(key == KeyEvent.VK_2 || key == 98)
-			addIp('2');
-		if(key == KeyEvent.VK_3 || key == 99)
-			addIp('3');
-		if(key == KeyEvent.VK_4 || key == 100)
-			addIp('4');
-		if(key == KeyEvent.VK_5 || key == 101)
-			addIp('5');
-		if(key == KeyEvent.VK_6 || key == 102)
-			addIp('6');
-		if(key == KeyEvent.VK_7 || key == 103)
-			addIp('7');
-		if(key == KeyEvent.VK_8 || key == 104)
-			addIp('8');
-		if(key == KeyEvent.VK_9 || key == 105)
-			addIp('9');
-		if(key == KeyEvent.VK_PERIOD || key == 46 || key == 110)
-			addIp('.');
-		if(key == KeyEvent.VK_BACK_SPACE)
-			removeIp();
-		if(key == KeyEvent.VK_ENTER) {
-			if(stato == Stato.SCREEN)
+		if(stato == Stato.SCREEN || stato == Stato.WON || stato == Stato.LOST) {
+			if(key == KeyEvent.VK_COLON || (key == 46 && k == 16))
+				addIp(':');
+			if(key == KeyEvent.VK_0  || key == 96)
+				addIp('0');
+			if(key == KeyEvent.VK_1 || key == 97)
+				addIp('1');
+			if(key == KeyEvent.VK_2 || key == 98)
+				addIp('2');
+			if(key == KeyEvent.VK_3 || key == 99)
+				addIp('3');
+			if(key == KeyEvent.VK_4 || key == 100)
+				addIp('4');
+			if(key == KeyEvent.VK_5 || key == 101)
+				addIp('5');
+			if(key == KeyEvent.VK_6 || key == 102)
+				addIp('6');
+			if(key == KeyEvent.VK_7 || key == 103)
+				addIp('7');
+			if(key == KeyEvent.VK_8 || key == 104)
+				addIp('8');
+			if(key == KeyEvent.VK_9 || key == 105)
+				addIp('9');
+			if((key == KeyEvent.VK_PERIOD || key == 46 || key == 110) && k != 16)
+				addIp('.');
+			if(key == KeyEvent.VK_BACK_SPACE)
+				removeIp();
+			if(key == KeyEvent.VK_ENTER) {
+				if(stato == stato.WON || stato == Stato.LOST) {
+					stato = Stato.SCREEN;
+					tclient = null;
+				}
 				client = new Client(this, this.getIp(), this.getPort());
-			if(stato == stato.WON || stato == Stato.LOST)
-				stato = Stato.SCREEN;
+			}
+			k = key;
 		}
 	}
 	
@@ -149,10 +153,11 @@ public class GameEngine implements Runnable{
 	public void run() {
 		while(true) {
 			//ricarico la posizione degli oggetti dentro all'array
-			if(stato != Stato.SCREEN && stato != Stato.WAIT) {
+			if(stato != Stato.SCREEN && stato != Stato.WAIT)
 				pannello.aggiornaPosizione();
-				
-				//controllo se sono morti tutti i giocatori
+			
+			//controllo se sono morti tutti i giocatori
+			if(stato == Stato.DEAD) {
 				if(clients == 0) {
 					client.inviaOggetto(new Messaggio(-1, -1, id, Azione.FINISH));
 					stato = Stato.LOST;
