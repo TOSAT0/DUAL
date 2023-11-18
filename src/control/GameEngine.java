@@ -226,6 +226,7 @@ public class GameEngine implements Runnable{
 	}
 	
 	public String getIp() {
+		pos = 0;
 		while(ip.charAt(pos) != ':' && pos < ip.length()-1)
 			pos++;
 		return ip.substring(0, pos);

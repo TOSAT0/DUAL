@@ -29,7 +29,10 @@ public class Client implements Runnable{
 		
 		try {
 			System.out.println("ip: "+ip+":"+port);
-			connessione = new Socket(ip, port);
+			if(ip.equals("0.0.0.0"))
+				connessione = new Socket(InetAddress.getLocalHost(), port);
+			else
+				connessione = new Socket(ip, port);
 			output = new ObjectOutputStream(connessione.getOutputStream());
 			input = new ObjectInputStream(connessione.getInputStream());
 			
