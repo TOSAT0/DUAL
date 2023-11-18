@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.ObjectInputFilter.Status;
 import java.time.chrono.MinguoEra;
 import java.util.ArrayList;
 import javax.swing.Timer;
