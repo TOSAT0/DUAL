@@ -33,6 +33,7 @@ public class Server {
 		}while(numClient < 2 || numClient%2 != 0);
 		try {
 			server = new ServerSocket(10000, 5);
+			System.out.println("server: "+server);
 			System.out.println("Server attivo\n");
 			this.accettaConnessione();
 		}catch(IOException e) { e.printStackTrace(); }
@@ -73,6 +74,12 @@ public class Server {
 				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}
 		}else {
+			if(msg.getAzione() == Azione.DEAD) {
+				clients.set(msg.getId(), null);
+				if(msg.getId() == sq1) {
+					
+				}
+			}
 			if(msg.getId()%2 == 0) {
 				for(int i=0; i<clients.size(); i+=2) {
 					if(msg.getId() != i)

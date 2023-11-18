@@ -121,15 +121,15 @@ public class GameEngine implements Runnable{
 			addIp('8');
 		if(key == KeyEvent.VK_9 || key == 105)
 			addIp('9');
-		if(key == KeyEvent.VK_0 || key == 110)
+		if(key == KeyEvent.VK_PERIOD || key == 46 || key == 110)
 			addIp('.');
 		if(key == KeyEvent.VK_BACK_SPACE)
 			removeIp();
 		if(key == KeyEvent.VK_ENTER) {
 			if(stato == Stato.SCREEN)
 				client = new Client(this, this.getIp(), this.getPort());
-			if(stato == Stato.FINISH)
-				System.out.println("akfnl");
+			if(stato == stato.WON || stato == Stato.LOST)
+				stato = Stato.SCREEN;
 		}
 	}
 	
