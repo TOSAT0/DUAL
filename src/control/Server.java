@@ -131,15 +131,16 @@ public class Server {
 	
 	/*GESTISCE LA DISCONNESSIONE DI UN CLIENT*/
 	public void clientDisconnesso(int client) {
-		if(clients.size() > 0)
+		if(clients.size() > 0) {
 			System.out.println(clients.get(client).getConnessione().getInetAddress()+":"+clients.get(client).getConnessione().getPort()+" disconnected");
-		clients.get(client).stopThread();
-		if(inizio) {
-			clients.set(client, null);
-			this.inviaMessagio(new Messaggio(-1, -1, client, Azione.DEAD));
-		}else {
-			clients.remove(client);
-			this.c--;
+			clients.get(client).stopThread();
+			if(inizio) {
+				clients.set(client, null);
+				this.inviaMessagio(new Messaggio(-1, -1, client, Azione.DEAD));
+			}else {
+				clients.remove(client);
+				this.c--;
+			}
 		}
 	}
 	
