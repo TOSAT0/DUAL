@@ -1,11 +1,11 @@
-package model;
+package CLIENT.model;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import control.GameEngine;
-import view.Pannello;
+import CLIENT.control.*;
+import CLIENT.view.*;
 
 public class Oggetto {
 	

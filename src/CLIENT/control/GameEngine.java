@@ -1,4 +1,4 @@
-package control;
+package CLIENT.control;
 
 import java.awt.Graphics;
 import java.awt.Panel;
@@ -14,11 +14,9 @@ import javax.swing.Timer;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import model.Messaggio;
-import model.Messaggio.Azione;
-import model.Stato;
-import view.CaricaImmagine;
-import view.Pannello;
+import CLIENT.model.*;
+import CLIENT.model.Messaggio.Azione;
+import CLIENT.view.*;
 
 public class GameEngine implements Runnable{
 	public static double P = (Toolkit.getDefaultToolkit().getScreenSize().getHeight())/1080;
@@ -174,24 +172,26 @@ public class GameEngine implements Runnable{
 				//controllo le collisioni
 				pannello.controlloHitbox();
 				
-				//gestione della ricarica dei proiettili
-				if(proiettili < 10) {
-					if(inputManager.spazio()) {
+				if(stato == Stato.PLAY) {
+					//gestione della ricarica dei proiettili
+					if(proiettili < 10) {
+						if(inputManager.spazio()) {
+							if(carica) {
+								timer.stop();
+								carica = false;
+							}
+						}else {
+							if(!carica) {
+								timer = new Timer(500, ricarica);
+								timer.start();
+								carica = true;
+							}
+						}
+					}else {
 						if(carica) {
 							timer.stop();
 							carica = false;
 						}
-					}else {
-						if(!carica) {
-							timer = new Timer(500, ricarica);
-							timer.start();
-							carica = true;
-						}
-					}
-				}else {
-					if(carica) {
-						timer.stop();
-						carica = false;
 					}
 				}
 			}

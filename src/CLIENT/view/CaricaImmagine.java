@@ -1,4 +1,4 @@
-package view;
+package CLIENT.view;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class CaricaImmagine {
 	public BufferedImage immagine(String nome) {
 		BufferedImage style = null;
         try {
-            InputStream inputStream = getClass().getResourceAsStream("/immagini/"+nome+".png");
+            InputStream inputStream = getClass().getResourceAsStream("/CLIENT/immagini/"+nome+".png");
             style = ImageIO.read(inputStream);
         } catch (IOException e) {
             e.printStackTrace();

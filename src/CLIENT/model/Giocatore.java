@@ -1,4 +1,4 @@
-package model;
+package CLIENT.model;
 
 import java.awt.image.BufferedImage;
 

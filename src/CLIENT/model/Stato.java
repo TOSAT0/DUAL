@@ -1,4 +1,4 @@
-package model;
+package CLIENT.model;
 
 public enum Stato {
 	SCREEN,

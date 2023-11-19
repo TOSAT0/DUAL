@@ -1,13 +1,13 @@
-package control;
+package CLIENT.control;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.Timer;
 
-import model.Messaggio;
-import model.Messaggio.Azione;
-import model.Stato;
+import CLIENT.model.*;
+import CLIENT.model.Messaggio.Azione;
 
 public class InputManager implements KeyListener{
 	

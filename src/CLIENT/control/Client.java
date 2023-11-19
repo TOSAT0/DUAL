@@ -1,15 +1,11 @@
-package control;
+package CLIENT.control;
 
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import model.Configurazione;
-import model.Messaggio;
-import model.Oggetto;
-import model.Stato;
-import view.Pannello;
-import model.Messaggio.Azione;
+import CLIENT.model.*;
+import CLIENT.model.Messaggio.Azione;
 
 import java.io.ObjectOutputStream;
 import java.io.IOException;

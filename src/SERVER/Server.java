@@ -1,4 +1,4 @@
-package control;
+package SERVER;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -9,9 +9,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import model.Configurazione;
-import model.Messaggio;
-import model.Messaggio.Azione;
+import CLIENT.model.*;
+import CLIENT.model.Messaggio.Azione;
 
 public class Server {
 	

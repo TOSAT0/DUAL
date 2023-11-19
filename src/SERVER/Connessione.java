@@ -1,11 +1,11 @@
-package control;
+package SERVER;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-import model.Messaggio;
+import CLIENT.model.*;
 
 public class Connessione implements Runnable{
 	

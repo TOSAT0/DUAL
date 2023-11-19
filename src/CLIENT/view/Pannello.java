@@ -1,4 +1,4 @@
-package view;
+package CLIENT.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,13 +17,9 @@ import javax.imageio.ImageIO;
 import javax.print.attribute.standard.MediaSize.Engineering;
 import javax.swing.JPanel;
 
-import control.GameEngine;
-import model.Giocatore;
-import model.Messaggio;
-import model.Oggetto;
-import model.Proiettile;
-import model.Stato;
-import model.Messaggio.Azione;
+import CLIENT.control.*;
+import CLIENT.model.*;
+import CLIENT.model.Messaggio.Azione;
 
 public class Pannello extends JPanel{
 	
