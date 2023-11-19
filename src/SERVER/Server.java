@@ -37,8 +37,6 @@ public class Server {
 			if(port < 10000)
 				System.out.println("\tinvalid number");
 		}while(port < 10000);
-		c_sq1 = numClient/2;
-		c_sq2 = numClient/2;
 		try {
 			server = new ServerSocket(port);
 			System.out.println("[SERVER START - "+InetAddress.getLocalHost()+":"+port+"]");
@@ -61,6 +59,10 @@ public class Server {
 				clients.get(c).inviaOggetto(new Configurazione(numClient));
 				new Thread(clients.get(c)).start();
 			}
+			c_sq1 = numClient/2;
+			c_sq2 = numClient/2;
+			sq1 = 0;
+			sq2 = 1;
 			inviaAvvio();
 		}catch(IOException e) { e.printStackTrace(); }
 		inizio = true;
