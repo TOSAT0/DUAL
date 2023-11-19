@@ -88,10 +88,11 @@ public class GameEngine implements Runnable{
 		if(msg.getAzione() == Azione.DEAD)
 			pannello.dead(msg.getId()/2);
 		if(msg.getAzione() == Azione.FINISH) {
-			if(clients == 0)
-				stato = Stato.LOST;
-			else
+			System.out.println("clients:"+clients);
+			if(clients > 0)
 				stato = Stato.WON;
+			else
+				stato = Stato.LOST;
 		}
 	}
 	
@@ -168,7 +169,7 @@ public class GameEngine implements Runnable{
 				tclient.start();
 			}
 			
-			if(stato == Stato.PLAY) {
+			if(stato == Stato.PLAY || stato == Stato.DEAD) {
 				//controllo le collisioni
 				pannello.controlloHitbox();
 				

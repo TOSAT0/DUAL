@@ -57,6 +57,7 @@ public class Pannello extends JPanel{
 
 //---------- METODI ------------------------------//
 	
+	/*CREA GLI OGGETTI GIOCATORE E LI INSERISCE NEL'ARRAY*/
 	public void inizializzaArrayGiocatori() {
 		giocatori = new ArrayList<Giocatore>();
 		for(int i=0; i < engine.clients; i++)
@@ -64,6 +65,7 @@ public class Pannello extends JPanel{
 		this.setPlayerStyle(10);
 	}
 	
+	/*STAMPA A SCHERMO GLI OGGETTI*/
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g.create();
@@ -120,6 +122,7 @@ public class Pannello extends JPanel{
         }
     }
 	
+	/*AGGIORNA LA POSIZIONE DEGLI OGGETTI*/
 	public void aggiornaPosizione() {
 		boolean controllo;
 		ArrayList<Proiettile> elimina = new ArrayList<Proiettile>();
@@ -145,22 +148,19 @@ public class Pannello extends JPanel{
         }
 	}
 	
+	/*CONTROLLA EVENTUALI COLLISIONI TRA GIOCATORI E PROIETTILI*/
 	public void controlloHitbox() {
 		ArrayList<Proiettile> elimina = new ArrayList<Proiettile>();
 		for(Proiettile p : proiettili_nemici) {
-			System.out.println("size: "+giocatori.size());
 			for(int i=0; i<giocatori.size(); i++) {
 				Giocatore g = giocatori.get(i);
-				System.out.println("["+engine.id+"] i: "+i+" - "+g.isVivo());
 				if(p.getHitbox().intersects(g.getHitbox())) {
 					if(g.isVivo())
 						elimina.add(p);
 					if(i == engine.id/2) {
-						if(g.getVita() - p.getPotenza() > 0) {
+						if(g.getVita() - p.getPotenza() > 0 && g.isVivo()) {
 							g.setVita(g.getVita()-p.getPotenza());
 						}else {
-							g.setVita(0);
-							engine.clients--;
 							engine.stato = Stato.DEAD;
 							engine.eseguiAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
 							engine.inviaAzione(new Messaggio(-1, -1, GameEngine.id, Azione.DEAD));
@@ -226,6 +226,8 @@ public class Pannello extends JPanel{
 	//DEAD
 	public void dead(int i) {
 		giocatori.get(i).setStyle(vuoto);
+		giocatori.get(i).setVita(0);
+		engine.clients--;
 	}
 
 //---------- STILE DEI GIOCATORI ------------------------------//

@@ -99,8 +99,12 @@ public class Server {
 					c_sq1--;
 				else
 					c_sq2--;
-				if(c_sq1 == 0 || c_sq2 == 0)
+				if(c_sq1 == 0 || c_sq2 == 0) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) { e.printStackTrace(); }
 					this.inviaMessagio(new Messaggio(-1, -1, -1, Azione.FINISH));
+				}
 			}
 			if(msg.getId()%2 == 0) {
 				for(int i=0; i<clients.size(); i+=2) {
