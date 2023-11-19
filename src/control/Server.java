@@ -78,11 +78,11 @@ public class Server {
 	/*INVIA MESSAGGIO AD UN ALTRO THREAD*/
 	public void inviaMessagio(Messaggio msg) {
 		if(msg.getAzione() == Azione.BULLET || msg.getAzione() == Azione.FINISH) {
-			if(msg.getId() == sq1) {
+			if(msg.getId() == sq1 || msg.getAzione() == Azione.FINISH) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
 				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}
-			if(msg.getId() == sq2) {
+			if(msg.getId() == sq2 || msg.getAzione() == Azione.FINISH) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
 				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
 			}
@@ -95,11 +95,12 @@ public class Server {
 		}else {
 			System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
 			if(msg.getAzione() == Azione.DEAD) {
-				if(msg.getId()%2 == 0) {
+				if(msg.getId()%2 == 0)
 					c_sq1--;
-				}else {
+				else
 					c_sq2--;
-				}
+				if(c_sq1 == 0 || c_sq2 == 0)
+					this.inviaMessagio(new Messaggio(-1, -1, -1, Azione.FINISH));
 			}
 			if(msg.getId()%2 == 0) {
 				for(int i=0; i<clients.size(); i+=2) {

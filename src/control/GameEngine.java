@@ -87,8 +87,12 @@ public class GameEngine implements Runnable{
 			pannello.bullet(msg.getPotenza(), msg.getX());
 		if(msg.getAzione() == Azione.DEAD)
 			pannello.dead(msg.getId()/2);
-		if(msg.getAzione() == Azione.FINISH)
-			stato = Stato.WON;
+		if(msg.getAzione() == Azione.FINISH) {
+			if(clients == 0)
+				stato = Stato.LOST;
+			else
+				stato = Stato.WON;
+		}
 	}
 	
 	/*RICEVE L'AZIONE DALL'INPUT MANAGER/PANNELLO E LA INVIA AL CLIENT*/
@@ -155,14 +159,6 @@ public class GameEngine implements Runnable{
 			//ricarico la posizione degli oggetti dentro all'array
 			if(stato != Stato.SCREEN && stato != Stato.WAIT)
 				pannello.aggiornaPosizione();
-			
-			//controllo se sono morti tutti i giocatori
-			if(stato == Stato.DEAD) {
-				if(clients == 0) {
-					client.inviaOggetto(new Messaggio(-1, -1, id, Azione.FINISH));
-					stato = Stato.LOST;
-				}
-			}
 			
 			//disegno degli oggetti presenti dentro all'array
 			pannello.repaint();
