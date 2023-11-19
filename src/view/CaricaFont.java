@@ -9,7 +9,7 @@ public class CaricaFont {
 	
 	public Font getFont(int size) {
 		try {
-	        InputStream inputStream = getClass().getResourceAsStream("/font/font.ttf");
+	        InputStream inputStream = getClass().getResourceAsStream("/font/font.TTF");
 	        assert inputStream != null;
 	        return Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont((float) size);
 	    } catch (IOException | FontFormatException ignored) {

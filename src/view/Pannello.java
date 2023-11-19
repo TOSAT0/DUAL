@@ -67,7 +67,7 @@ public class Pannello extends JPanel{
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g.create();
-        g2D.setFont(font.getFont(75));
+        g2D.setFont(font.getFont((int)(75*engine.P)));
         
         if(engine.stato == Stato.SCREEN || engine.stato == Stato.WAIT) {
         	g2D.drawImage(start_screen, 0, 0, engine.width, engine.height, null);
@@ -148,11 +148,14 @@ public class Pannello extends JPanel{
 	public void controlloHitbox() {
 		ArrayList<Proiettile> elimina = new ArrayList<Proiettile>();
 		for(Proiettile p : proiettili_nemici) {
-			for(Giocatore g : giocatori) {
+			System.out.println("size: "+giocatori.size());
+			for(int i=0; i<giocatori.size(); i++) {
+				Giocatore g = giocatori.get(i);
+				System.out.println("["+engine.id+"] i: "+i+" - "+g.isVivo());
 				if(p.getHitbox().intersects(g.getHitbox())) {
 					if(g.isVivo())
 						elimina.add(p);
-					if(/*G DEVE ESSERE IL GIOCATORE EFFETTIVO, NON UNO A CASO*/) {
+					if(i == engine.id/2) {
 						if(g.getVita() - p.getPotenza() > 0) {
 							g.setVita(g.getVita()-p.getPotenza());
 						}else {
