@@ -1,7 +1,7 @@
 package control;
 
 import java.io.IOException;
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,7 +12,6 @@ import java.util.Scanner;
 import model.Configurazione;
 import model.Messaggio;
 import model.Messaggio.Azione;
-import model.Oggetto;
 
 public class Server {
 	
@@ -24,7 +23,6 @@ public class Server {
 	private boolean inizio = false;
 	
 	private ArrayList<Connessione> clients = new ArrayList<Connessione>();
-	private ArrayList<Thread> threads = new ArrayList<Thread>();
 	
 	/*IL SERVER AVVIA LA COMUNICAZIONE*/
 	public Server() {
@@ -59,13 +57,11 @@ public class Server {
 		try {
 			for(c=0; c<numClient; c++) {
 				connessione = server.accept();
-				System.out.println(connessione.getLocalAddress()+":"+connessione.getLocalPort()+" connected");
+				System.out.println(connessione.getInetAddress()+":"+connessione.getPort()+" connected");
 				clients.add(new Connessione(this, connessione, c));
 				clients.get(c).inviaOggetto(new Configurazione(numClient));
-				threads.add(new Thread(clients.get(c)));
-				threads.get(c).start();
+				new Thread(clients.get(c)).start();
 			}
-			System.out.println("Server: OK");
 			inviaAvvio();
 		}catch(IOException e) { e.printStackTrace(); }
 		inizio = true;
@@ -80,7 +76,7 @@ public class Server {
 	
 	/*INVIA MESSAGGIO AD UN ALTRO THREAD*/
 	public void inviaMessagio(Messaggio msg) {
-		if(msg.getAzione() == Azione.BULLET || msg.getAzione() == Azione.FINISH) {
+		if(msg.getAzione() == Azione.BULLET || msg.getId() == -1) {
 			if(msg.getId() == sq1 || msg.getAzione() == Azione.FINISH) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
 				for(int i=1; i<clients.size(); i+=2) {
@@ -88,7 +84,7 @@ public class Server {
 						clients.get(i).inviaOggetto(msg);
 				}
 			}
-			if(msg.getId() == sq2 || msg.getAzione() == Azione.FINISH) {
+			if(msg.getId() == sq2 || msg.getId() == -1) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
 				for(int i=0; i<clients.size(); i+=2) {
 					if(clients.get(i) != null)
@@ -97,14 +93,27 @@ public class Server {
 			}
 			if(msg.getAzione() == Azione.FINISH) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
-				for(Connessione c : clients)
-					c.stopThread();
+				for(Connessione c : clients) {
+					if(c != null)
+						c.stopThread();
+				}
 				clients.removeAll(clients);
 				inizio = false;
 				accettaConnessione();
 			}
 		}else {
 			System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
+			if(msg.getId()%2 == 0) {
+				for(int i=0; i<clients.size(); i+=2) {
+					if(msg.getId() != i && clients.get(i) != null)
+						clients.get(i).inviaOggetto(msg);
+				}
+			}else {
+				for(int i=1; i<clients.size(); i+=2) {
+					if(msg.getId() != i && clients.get(i) != null)
+						clients.get(i).inviaOggetto(msg);
+				}
+			}
 			if(msg.getAzione() == Azione.DEAD) {
 				if(msg.getId()%2 == 0) {
 					c_sq1--;
@@ -117,32 +126,20 @@ public class Server {
 					this.inviaMessagio(new Messaggio(-1, -1, -1, Azione.FINISH));
 				}
 			}
-			if(msg.getId()%2 == 0) {
-				for(int i=0; i<clients.size(); i+=2) {
-					if(msg.getId() != i && clients.get(i) != null)
-						clients.get(i).inviaOggetto(msg);
-				}
-			}else {
-				for(int i=1; i<clients.size(); i+=2) {
-					if(msg.getId() != i && clients.get(i) != null)
-						clients.get(i).inviaOggetto(msg);
-				}
-			}
 		}
 	}
 	
 	/*GESTISCE LA DISCONNESSIONE DI UN CLIENT*/
 	public void clientDisconnesso(int client) {
-		System.out.println(clients.get(client).getConnessione().getLocalAddress()+":"+clients.get(client).getConnessione().getLocalPort()+" disconnected");
+		if(clients.size() > 0)
+			System.out.println(clients.get(client).getConnessione().getInetAddress()+":"+clients.get(client).getConnessione().getPort()+" disconnected");
+		clients.get(client).stopThread();
 		if(inizio) {
 			clients.set(client, null);
 			this.inviaMessagio(new Messaggio(-1, -1, client, Azione.DEAD));
 		}else {
-			if(clients.size() > 0) {
-				clients.remove(client);
-				clients.get(client).stopThread();
-				this.c--;
-			}
+			clients.remove(client);
+			this.c--;
 		}
 	}
 	
@@ -150,6 +147,12 @@ public class Server {
 
 	public boolean getInizio() {
 		return this.inizio;
+	}
+	
+//-------------------- MAIN ------------------------------//
+	
+	public static void main(String[] args) {
+		new Server();
 	}
 	
 }

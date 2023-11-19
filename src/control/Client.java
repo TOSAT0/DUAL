@@ -64,7 +64,13 @@ public class Client implements Runnable{
 				msg = (Messaggio) input.readObject();
 				engine.eseguiAzione(msg);
 			}
-		} catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
+		} catch (IOException | ClassNotFoundException e) {
+			try {
+				input.close();
+		        output.close();
+		        connessione.close();
+			} catch (IOException e1) { e1.printStackTrace(); }
+		}
 	}
 
 //-------------------- ALTRI METODI ----------------------------------------//

@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 import model.Messaggio;
-import model.Messaggio.Azione;
 
 public class Connessione implements Runnable{
 	
@@ -61,7 +60,14 @@ public class Connessione implements Runnable{
 	}
 	
 	public void stopThread() {
-		run = false;
+	    run = false;
+	    try {
+	        input.close();
+	        output.close();
+	        connessione.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 }
