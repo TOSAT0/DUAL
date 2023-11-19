@@ -81,11 +81,17 @@ public class Server {
 		if(msg.getAzione() == Azione.BULLET || msg.getAzione() == Azione.FINISH) {
 			if(msg.getId() == sq1 || msg.getAzione() == Azione.FINISH) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
-				for(int i=1; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
+				for(int i=1; i<clients.size(); i+=2) {
+					if(clients.get(i) != null)
+						clients.get(i).inviaOggetto(msg);
+				}
 			}
 			if(msg.getId() == sq2 || msg.getAzione() == Azione.FINISH) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
-				for(int i=0; i<clients.size(); i+=2)	clients.get(i).inviaOggetto(msg);
+				for(int i=0; i<clients.size(); i+=2) {
+					if(clients.get(i) != null)
+						clients.get(i).inviaOggetto(msg);
+				}
 			}
 			if(msg.getAzione() == Azione.FINISH) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
@@ -109,12 +115,12 @@ public class Server {
 			}
 			if(msg.getId()%2 == 0) {
 				for(int i=0; i<clients.size(); i+=2) {
-					if(msg.getId() != i)
+					if(msg.getId() != i && clients.get(i) != null)
 						clients.get(i).inviaOggetto(msg);
 				}
 			}else {
 				for(int i=1; i<clients.size(); i+=2) {
-					if(msg.getId() != i)
+					if(msg.getId() != i && clients.get(i) != null)
 						clients.get(i).inviaOggetto(msg);
 				}
 			}
@@ -124,6 +130,7 @@ public class Server {
 	/*GESTISCE LA DISCONNESSIONE DI UN CLIENT*/
 	public void clientDisconnesso(int client) {
 		if(inizio) {
+			clients.set(client, null);
 			this.inviaMessagio(new Messaggio(-1, -1, client, Azione.DEAD));
 		}else {
 			clients.remove(client);

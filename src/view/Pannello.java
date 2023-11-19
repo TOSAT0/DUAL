@@ -155,9 +155,7 @@ public class Pannello extends JPanel{
 			for(int i=0; i<giocatori.size(); i++) {
 				Giocatore g = giocatori.get(i);
 				if(p.getHitbox().intersects(g.getHitbox())) {
-					System.out.println("["+engine.id+"] - "+g.isVivo());
 					if(g.isVivo()) {
-						System.out.println("vivo");
 						elimina.add(p);
 						if(i == engine.id/2) {
 							if(g.getVita() - p.getPotenza() > 0) {

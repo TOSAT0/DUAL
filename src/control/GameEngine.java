@@ -132,11 +132,12 @@ public class GameEngine implements Runnable{
 			if(key == KeyEvent.VK_BACK_SPACE)
 				removeIp();
 			if(key == KeyEvent.VK_ENTER) {
-				if(stato == stato.WON || stato == Stato.LOST) {
+				if(stato == Stato.SCREEN) {
+					client = new Client(this, this.getIp(), this.getPort());
+				}else {
 					stato = Stato.SCREEN;
 					tclient = null;
 				}
-				client = new Client(this, this.getIp(), this.getPort());
 			}
 			k = key;
 		}
