@@ -66,6 +66,7 @@ public class Server {
 			System.out.println("Server: OK");
 			inviaAvvio();
 		}catch(IOException e) { e.printStackTrace(); }
+		inizio = true;
 	}
 	
 	/*IL SERVER INVIA A TUTTI I CLIENT UN MESSAGGIO DI AVVIO E IL LORO ID*/
@@ -95,14 +96,14 @@ public class Server {
 		}else {
 			System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
 			if(msg.getAzione() == Azione.DEAD) {
-				if(msg.getId()%2 == 0)
+				if(msg.getId()%2 == 0) {
 					c_sq1--;
-				else
+					sq1+=2;
+				}else {
 					c_sq2--;
+					sq2+=2;
+				}
 				if(c_sq1 == 0 || c_sq2 == 0) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) { e.printStackTrace(); }
 					this.inviaMessagio(new Messaggio(-1, -1, -1, Azione.FINISH));
 				}
 			}
@@ -122,13 +123,13 @@ public class Server {
 	
 	/*GESTISCE LA DISCONNESSIONE DI UN CLIENT*/
 	public void clientDisconnesso(int client) {
-		if(!inizio) {
+		if(inizio) {
+			this.inviaMessagio(new Messaggio(-1, -1, client, Azione.DEAD));
+		}else {
 			clients.remove(client);
 			this.c--;
-			System.out.println("Player"+(client+1)+" disconnected");
-		}else {
-			this.inviaMessagio(new Messaggio(-1, -1, client, Azione.DEAD));
 		}
+		System.out.println("Player"+(client+1)+" disconnected");
 	}
 	
 //-------------------- GETTER E SETTER --------------------//
