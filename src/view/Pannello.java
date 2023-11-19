@@ -118,7 +118,7 @@ public class Pannello extends JPanel{
                 g2D.drawImage(og.getStyle(), (int)og.getX(), (int)og.getY(), (int)og.getDx(), (int)og.getDy(), null);
             }
             
-            g2D.drawString(String.valueOf(giocatori.get(GameEngine.id/2).getVita()*5)+"%", 25, 75);
+            g2D.drawString(String.valueOf(giocatori.get(GameEngine.id/2).getVita()*10)+"%", 25, 75);
         }
     }
 	

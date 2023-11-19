@@ -24,6 +24,7 @@ public class Server {
 	private boolean inizio = false;
 	
 	private ArrayList<Connessione> clients = new ArrayList<Connessione>();
+	private ArrayList<Thread> threads = new ArrayList<Thread>();
 	
 	/*IL SERVER AVVIA LA COMUNICAZIONE*/
 	public Server() {
@@ -58,10 +59,11 @@ public class Server {
 		try {
 			for(c=0; c<numClient; c++) {
 				connessione = server.accept();
-				System.out.println("Player"+(c+1)+": "+connessione.getInetAddress()+":"+connessione.getPort());
+				System.out.println(connessione.getLocalAddress()+":"+connessione.getLocalPort()+" connected");
 				clients.add(new Connessione(this, connessione, c));
 				clients.get(c).inviaOggetto(new Configurazione(numClient));
-				new Thread(clients.get(c)).start();
+				threads.add(new Thread(clients.get(c)));
+				threads.get(c).start();
 			}
 			System.out.println("Server: OK");
 			inviaAvvio();
@@ -95,6 +97,8 @@ public class Server {
 			}
 			if(msg.getAzione() == Azione.FINISH) {
 				System.out.println("[SERVER] Id: "+msg.getId()+" - "+msg.getId()/2+": Action: " + msg.getAzione());
+				for(Connessione c : clients)
+					c.stopThread();
 				clients.removeAll(clients);
 				inizio = false;
 				accettaConnessione();
@@ -129,14 +133,17 @@ public class Server {
 	
 	/*GESTISCE LA DISCONNESSIONE DI UN CLIENT*/
 	public void clientDisconnesso(int client) {
+		System.out.println(clients.get(client).getConnessione().getLocalAddress()+":"+clients.get(client).getConnessione().getLocalPort()+" disconnected");
 		if(inizio) {
 			clients.set(client, null);
 			this.inviaMessagio(new Messaggio(-1, -1, client, Azione.DEAD));
 		}else {
-			clients.remove(client);
-			this.c--;
+			if(clients.size() > 0) {
+				clients.remove(client);
+				clients.get(client).stopThread();
+				this.c--;
+			}
 		}
-		System.out.println("Player"+(client+1)+" disconnected");
 	}
 	
 //-------------------- GETTER E SETTER --------------------//

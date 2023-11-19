@@ -17,7 +17,7 @@ public class Connessione implements Runnable{
 	private Server server;
 	
 	private int id;
-	private boolean vivo = true;
+	private boolean vivo = true, run = true;
 	
 	public Connessione(Server server, Socket connessione, int id) {
 		this.server = server;
@@ -36,7 +36,7 @@ public class Connessione implements Runnable{
 	public void run() {
 		Messaggio msg;
 		try {
-			while(true) {
+			while(run) {
 				msg = (Messaggio) input.readObject();
 				server.inviaMessagio(msg);
 			}
@@ -58,6 +58,10 @@ public class Connessione implements Runnable{
 	
 	public Socket getConnessione() {
 		return this.connessione;
+	}
+	
+	public void stopThread() {
+		run = false;
 	}
 	
 }

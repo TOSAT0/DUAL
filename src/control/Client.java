@@ -37,7 +37,7 @@ public class Client implements Runnable{
 			input = new ObjectInputStream(connessione.getInputStream());
 			
 			engine.stato = Stato.WAIT;
-		}catch(IOException e) { e.printStackTrace(); }
+		}catch(IOException e) {}
 	}
 	
 //-------------------- RUN --------------------------------------------------//

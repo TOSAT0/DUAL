@@ -8,7 +8,7 @@ public class Giocatore extends Oggetto{
 	
 	public Giocatore(double x, double y, double dx, double dy, BufferedImage style) {
 		super(x, y, dx, dy, style);
-		this.vita = 20;
+		this.vita = 10;
 	}
 	
 	public int getVita() {
