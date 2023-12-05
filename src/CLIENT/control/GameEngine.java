@@ -228,13 +228,9 @@ public class GameEngine implements Runnable{
 		pos = 0;
 		while(ip.charAt(pos) != ':' && pos < ip.length()-1)
 			pos++;
-		if(pos == ip.length()-1)
-			return ip.substring(0, pos);
-		return "";
+		return ip.substring(0, pos);
 	}
 	public int getPort() {
-		if(pos == ip.length()-1)
-			return 0;
 		return Integer.parseInt(ip.substring(pos+1, ip.length()));
 	}
 	
